@@ -1,0 +1,46 @@
+{% set in_catalog_dropdown = 1 %}
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <span>
+                        <img alt="image" width="160px" src="{{ asset('assets/v2/img/logo_gvfiltri.png') }}">
+                     </span>
+                </div>
+            </li>
+            <li{% if in_catalog_dropdown %} class="active"{% endif %}>
+                <a href="#"><i class="fal fa-book"></i> <span class="nav-label">{% trans %}Catalog{% endtrans %}</span></a>
+                <ul class="nav nav-second-level">
+                    <li{% if app.request.get('_route') == 'admin_categories_list' %} class="active"{% endif %}>
+                        <a href="{{ path('admin_categories_list') }}">
+                            {% trans %}Categories{% endtrans %}
+                        </a>
+                    </li>
+                    <li{% if app.request.get('_route') == 'admin_applications_list' %} class="active"{% endif %}>
+                        <a href="{{ path('admin_applications_list') }}">
+                            {% trans %}Applications{% endtrans %}
+                        </a>
+                    </li>
+                    <li{% if app.request.get('_route') == 'admin_products_list' %} class="active"{% endif %}>
+                        <a href="{{ path('admin_products_list') }}">
+                            {% trans %}Products{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <li{% if app.request.get('_route') == 'admin_users_list' %} class="active"{% endif %}>
+                    <a href="{{ path('admin_users_list') }}"><i class="fal fa-users"></i> <span class="nav-label">{% trans %}Users{% endtrans %}</span></a>
+                </li>
+                <li{% if app.request.get('_route') == 'admin_roles_list' %} class="active"{% endif %}>
+                    <a href="{{ path('admin_roles_list') }}"><i class="fal fa-lock-alt"></i> <span class="nav-label">{% trans %}Roles{% endtrans %}</span></a>
+                </li>
+            {% endif %}
+            <li{% if app.request.get('_route') == 'logout' %} class="active"{% endif %}>
+                <a href="{{ path('logout') }}"><i class="fal fa-sign-out-alt"></i> <span class="nav-label">{% trans %}Make Logout{% endtrans %}</span></a>
+            </li>
+        </ul>
+
+    </div>
+</nav>

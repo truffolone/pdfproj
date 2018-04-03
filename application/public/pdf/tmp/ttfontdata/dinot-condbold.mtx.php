@@ -1,0 +1,37 @@
+<?php
+$name='DINOT-CondBold';
+$type='TTF';
+$desc=array (
+  'CapHeight' => 712.0,
+  'XHeight' => 527.0,
+  'FontBBox' => '[-70 -226 1003 962]',
+  'Flags' => 262148,
+  'Ascent' => 962.0,
+  'Descent' => -226.0,
+  'Leading' => 0.0,
+  'ItalicAngle' => 0.0,
+  'StemV' => 165.0,
+  'MissingWidth' => 417.0,
+);
+$unitsPerEm=1000;
+$up=-152;
+$ut=77;
+$strp=288;
+$strs=77;
+$ttffile='/var/www/html/pdfproj/vendor/mpdf/mpdf/src/Config/../../ttfonts/DINOT-CondBold.ttf';
+$TTCfontID='0';
+$originalsize=55312;
+$sip=false;
+$smp=false;
+$BMPselected=false;
+$fontkey='dinot-condbold';
+$panose=' 0 0 2 b 8 6 2 1 1 1 1 2';
+$haskerninfo=false;
+$haskernGPOS=false;
+$hassmallcapsGSUB=false;
+$fontmetrics='win';
+// TypoAscender/TypoDescender/TypoLineGap = 764, -236, 288
+// usWinAscent/usWinDescent = 1041, -237
+// hhea Ascent/Descent/LineGap = 1041, -237, 10
+$useOTL=0x0000;
+$rtlPUAstr='';

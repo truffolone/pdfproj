@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {# include 'printer/partials/styles.html.twig' #}
+    <style>
+        .keep-together {
+            page-break-inside: avoid;
+        }
+
+        .break-before {
+            page-break-before: always;
+        }
+
+        .break-after {
+            page-break-after: always;
+        }
+
+        .pdfHeader {
+            background-color: #00384f !important;
+            height: 32mm;
+            page-break-after: avoid;
+        }
+
+        .pdfHeader:after {
+            content:'';
+            position: absolute;
+            top: 31mm;
+            left: 35mm;
+            margin-left: -20mm;
+            width: 0;
+            height: 0;
+            border-top: solid 9mm #003D50;
+            border-left: solid 6mm transparent;
+            border-right: solid 6mm transparent;
+        }
+
+        .topLogoImg {
+            margin-top: 12mm;
+            margin-left: 15mm;
+            height: 12mm;
+        }
+
+
+        .imagePdfProd {
+            float: right;
+            vertical-align: bottom;
+            margin-bottom: -20%;
+            max-width: 80mm;
+        }
+
+        {# .lastFooter:before {
+            content:'';
+            position: relative;
+            bottom: -9mm;
+            left: 43mm;
+            margin-left: -20mm;
+            width: 0;
+            height: 10mm;
+            border-top: solid 9mm #FFFFFF;
+            border-left: solid 6mm transparent;
+            border-right: solid 6mm transparent;
+        } #}
+
+        .pdfFooter {
+
+        }
+
+        .lastFooter {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding-right: 2mm;
+            text-align: right;
+            font-family: 'dinot', Fallback, sans-serif;
+            background-color: #003D50 !important;
+            color: #FFFFFF;
+            height: 30mm;
+        }
+
+        body {
+            height:100%;
+            font-family: 'dinot', Fallback, sans-serif;
+        }
+
+        hr {
+            float: left;
+        }
+
+        .triangleTop {
+            position: absolute;
+            margin-top: -20mm;
+            margin-bottom: 20mm;
+            height: 10mm;
+            margin-left: -1mm;
+        }
+
+        .pdfMainPageTitleA {
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 13pt;
+            font-family: 'dinot-bold', Fallback, sans-serif;
+            padding-top: 15mm;
+            margin-bottom: 0mm;
+        }
+
+        .pdfMainPageTitleAMP{
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 13pt;
+            font-family: 'dinot-bold', Fallback, sans-serif;
+            margin-top: 5mm;
+            margin-bottom: 0mm;
+        }
+
+        .pdfMainPageTitle {
+            font-weight: bold;
+            color: #ffffff;
+            text-transform: uppercase;
+            font-size: 23pt;
+            font-family: 'dinot-bold', Fallback, sans-serif;
+            margin-top: -15mm;
+        }
+
+        .righettaBlu {
+            border-bottom: 2pt solid #00384f;
+            border-top: 0mm dashed #00384f;
+            border-left: 0mm dashed #00384f;
+            border-right: 0mm dashed #00384f;
+        }
+
+        .righettaBluA {
+            width: 10mm;
+            border-bottom: 2pt solid #00384f;
+            border-top: 0mm dashed #00384f;
+            border-left: 0mm dashed #00384f;
+            border-right: 0mm dashed #00384f;
+            margin-bottom: 6mm;
+        }
+
+        {# .listOfApplications {
+            margin-top: 6mm;
+        } #}
+
+        hr.afterTitle {
+            border-top: 2px solid #00384f;
+            width: 20mm;
+            float: left;
+            display: grid;
+        }
+
+        .mainPageRow {
+            width: 100%;
+            display:block;
+        }
+
+        p.condensed {
+            font-family: 'dinot-cond', Fallback, sans-serif;
+            padding-right: 0;
+            font-size: 16pt;
+            color: #003D50;
+        }
+
+        p.condensed_small {
+            font-family: 'dinot-cond', Fallback, sans-serif;
+            padding-right: 0;
+            font-size: 10pt;
+            color: #003D50;
+        }
+
+        img.catIcon {
+            width: 18mm;
+            padding-top: 3mm;
+        }
+
+        .pdfCatTableH {
+            width: 25mm;
+            vertical-align: top;
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 2.8mm;
+            font-family: 'dinot-medium', Fallback, sans-serif;
+            color: #003D50;
+            text-transform: uppercase;
+        }
+
+        .catTableMarkets {
+            text-align: center;
+            margin-bottom: 2%;
+        }
+
+        .mainPageLeft {
+            width: 55%;
+            display:inline;
+            vertical-align: top;
+            height:inherit;
+            margin-bottom: 20%;
+        }
+
+        .mainPageRight {
+            width: 44%;
+            display: inline;
+            vertical-align: bottom;
+            text-align: right;
+        }
+
+        .catTablePdf {
+            border-collapse: collapse;
+            vertical-align: bottom;
+            bottom: 0;
+        }
+
+        .catTablePdf td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        img.disabled {
+            opacity: 0.2;
+            filter: alpha(opacity=20);
+        }
+
+        .catTablePdf td, table th {
+            border: 1px solid white;
+        }
+        .catTablePdf tr:first-child th {
+            border-top: 0;
+        }
+        .catTablePdf tr:last-child td {
+            border-bottom: 0;
+        }
+        .catTablePdf tr td:first-child,
+        .catTablePdf tr th:first-child {
+            border-left: 0;
+        }
+        .catTablePdf tr td:last-child,
+        .catTablePdf tr th:last-child {
+            border-right: 0;
+        }
+
+        .blackSectionTitle {
+            color: #4AB7A9;
+            font-size: 13pt;
+        }
+
+        .pdfContainerWhiteMP {
+            padding-left: 15mm;
+            padding-right: 15mm;
+            background-color: #ffffff !important;
+            padding-top: 15mm;
+            page-break-inside: avoid;
+        }
+
+        .pdfContainerWhite {
+            padding-left: 15mm;
+            padding-right: 15mm;
+            background-color: #ffffff !important;
+            page-break-inside: avoid;
+            margin-bottom: 10mm;
+            margin-top: 10mm;
+        }
+
+        
+
+        .pdfContainerGrey {
+            padding-left: 15mm;
+            padding-right: 15mm;
+            background-color: #eeeeee !important;
+            margin-bottom: 10mm;
+            margin-top: 10mm;
+        }
+
+        {# .pdfContainerGrey {
+            background-color: #eeeeee;
+            padding-left: 15mm;
+            padding-right: 15mm;
+            height: 100%;
+            margin-bottom: 0;
+            margin-top: 10pt;
+            padding-top: 10mm;
+            padding-bottom: 10mm;
+        } #}
+
+         .pdfContainer {
+            padding-left: 15mm;
+            padding-right: 15mm;
+            background-color: #4AB7A9;
+            padding-top: 15mm;
+            page-break-inside: avoid;
+        }
+
+        
+        p.applicationListText {
+            font-family: 'dinot-cond', Fallback, sans-serif;
+            padding-right: 10%;
+            font-size: 12pt;
+            color: #003D50;
+            margin-top: 3mm!important;
+            margin-bottom: 0mm!important;
+            line-height: 0.6mm;
+        }
+
+
+        .applicationListTitle {
+            font-family: 'dinot-condbold', Fallback, sans-serif;
+            padding-right: 10%;
+            font-size: 13pt;
+            color: #003D50;
+            font-weight: bold;
+            margin-bottom: 3mm!important;
+            margin-top: 3mm!important;
+            line-height: 0.6mm;
+        }
+
+        
+
+        {# .textPage {
+            padding-top: 10mm;
+        } #}
+
+        .applicationsList {
+            margin-top: 10%;
+        }
+
+        body {
+            margin:0;
+        }
+
+        
+
+        table.table-borderedRadio {
+            border: 0px solid #EBEBEB;
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+        }
+        table.table-borderedRadio th {
+            background-color: #EBEBEB;
+        }
+        table.table-borderedRadio td, table.table-bordered th {
+            border: 0px solid #EBEBEB;
+            padding: 3px 4px;
+        }
+        table.table-borderedRadio tbody tr:first-child td {
+            background-color: #EBEBEB;
+            font-size: 5mm;
+        }
+        table.table-borderedRadio td:nth-child(even) {
+            background: #FFFFFF;
+        }
+        table.table-borderedRadio thead {
+            background: #EBEBEB;
+            border-bottom: 0px solid #EBEBEB;
+        }
+        table.table-borderedRadio thead th {
+            font-family: 'dinot-condbold', Fallback, sans-serif;
+            color: #333333;
+            text-align: center;
+            border-left: 0px solid #EBEBEB;
+        }
+        table.table-borderedRadio thead th:first-child {
+            border-left: 0px solid #EBEBEB;
+        }
+
+        table.table-borderedRadio tfoot {
+            font-family: 'dinot-condbold', Fallback, sans-serif;
+            color: #333333;
+            border-top: 0px solid #EBEBEB;
+        }
+        table.table-borderedRadio tfoot td {
+            font-size: 5.2mm;
+        }
+
+        table.table-bordered {
+            border: 1px solid #EBEBEB;
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+        }
+        table.table-bordered th {
+            background-color: #EBEBEB;
+        }
+        table.table-bordered td, table.table-bordered th {
+            border: 1px solid #EBEBEB;
+            padding: 3px 4px;
+        }
+        table.table-bordered tbody tr:first-child td {
+            background-color: #EBEBEB;
+            font-size: 5mm;
+        }
+        table.table-bordered td:nth-child(even) {
+            background: #FFFFFF;
+        }
+        table.table-bordered thead {
+            background: #EBEBEB;
+            border-bottom: 1px solid #EBEBEB;
+        }
+        table.table-bordered thead th {
+            font-family: 'dinot-condbold', Fallback, sans-serif;
+            color: #333333;
+            text-align: center;
+            border-left: 1px solid #EBEBEB;
+        }
+        table.table-bordered thead th:first-child {
+            border-left: 1px solid #EBEBEB;
+        }
+
+        table.table-bordered tfoot {
+            font-family: 'dinot-condbold', Fallback, sans-serif;
+            color: #333333;
+            border-top: 1px solid #EBEBEB;
+        }
+        table.table-bordered tfoot td {
+            font-size: 5.2mm;
+        }
+
+        .divImagePage {
+            text-align: center;
+            width: 100%;
+        }
+
+        .imageForImagePage {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .fullWidthTable {
+            width: 100%;
+            border: 0;
+        }
+
+        .leftTablePdf {
+            width:40%;
+            color: #000000;
+            font-family: 'dinot-condbold', Fallback, sans-serif;
+            font-size: 13pt;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .rightTablePdf {
+            width:60%;
+            color: #000000;
+            font-family: 'dinot-cond', Fallback, sans-serif;
+            font-size: 13pt;
+            text-align: left;
+        }
+
+        .triangleBottom {
+            position: absolute;
+            margin-top: -1mm;
+            margin-left: 20mm;
+            float: left;
+            height: 10mm;
+        }
+
+        .footerrimo {
+            float: left;
+            width:100%;
+            text-align: left;
+            color: #4AB7A9;
+            margin-left: 15mm;
+            bottom:0;
+            margin-top:20pt;
+        }
+    </style>
+
+    <title>{{ product.name }}</title>
+</head>
+<body>
+<div class="pdfHeader" role="navigation">
+    <div class="navbar-header">
+        <img src="{{ absolute_url(asset('images/logo_header.png')) }}" class="topLogoImg">
+    </div>
+</div>
+
+{% for page in pages %}
+    {% if page.type == 'mainPage' %}
+        {% include 'printer/partials/mainPage_print.html.twig' %}
+    {% elseif page.type == 'textPage' %}
+        {% include 'printer/partials/textPage_print.html.twig' %}
+    {% elseif page.type == 'tablePage' %}
+        {% include 'printer/partials/tablePage_print.html.twig' %}
+    {% elseif page.type == 'imagePage' %}
+        {% include 'printer/partials/imagePage_print.html.twig' %}
+    {% elseif page.type == 'radioPage' %}
+        {% include 'printer/partials/radioPage_print.html.twig' %}
+    {% endif %}
+{% endfor %}
+<div class="lastFooter">
+    <img src="{% if pages|length is odd %}{{ absolute_url(asset('images/triangolo_bianco.png')) }}{% else %}{{ absolute_url(asset('images/triangolo_grigio.png')) }}{% endif %}" class="triangleBottom">
+    <div class="footerrimo">
+        <table border="0" width="100%" style="margin-top:5mm;margin-right:15mm;">
+            <tr>
+                <td align="left"><h2 style="font-family:'dinot-black', Fallback, sans-serif;font-size: 36pt;color:#4AB7A9;font-weight:500;">gvfiltri.it</h2></td>
+                <td align="right"><p style="font-family:'dinot-bold', Fallback, sans-serif;font-size:18pt;text-transform: uppercase; color:#FFFFFF;">{{ product.name }}</p></td>
+            </tr>
+        </table>
+        <span style="font-family:'dinot-light', Fallback, sans-serif;font-size: 9pt;color: #4AB7A9; display: inline-block;">Via Chieri 85/1 | Baldissero Torinese - 10020 | Phone +39 011-9442304 | Fax. +39 011-9442973 | info@gvfiltri.it</span>
+        <span style="font-family:'dinot-light', Fallback, sans-serif; font-size: 9pt;color:#FFFFFF;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {% trans %}Revision{% endtrans %}: {{ product.revision }}</span>
+    </div>
+    
+</div>
+</body>
+</html>

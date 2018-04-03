@@ -1,0 +1,41 @@
+{% extends 'layouts/adminv2.html.twig' %}
+
+{% block title %}{% trans %}User List{% endtrans %} {{ parent() }}{% endblock %}
+
+{% block body %}
+    <h1>{% trans %}User List{% endtrans %}</h1>
+    <div class="row">
+        <div class="content col-md-4">
+            <p><b>{% trans %}Users Found{% endtrans %}:</b> {{ pagination.getTotalItemCount }}</p>
+        </div>
+        <div class="content col-md-8 text-right">
+            <a href="{{ path('admin_users_create') }}" class="btn btn-primary">{% trans %}Create New User{% endtrans %}</a>
+        </div>
+    </div>
+
+    <table class="table">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th scope="col">{{ knp_pagination_sortable(pagination, 'Id', 'u.id') }}</th>
+            <th scope="col"{% if pagination.isSorted('u.username') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Username'|trans({},'messages'), 'u.username') }}</th>
+            <th scope="col"{% if pagination.isSorted('u.email') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Email'|trans({},'messages'), 'u.email') }}</th>
+            <th scope="col"{% if pagination.isSorted('r.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Role Name'|trans({},'messages'), 'r.name') }}</th>
+            <th scope="col"{% if pagination.isSorted('u.isActive') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Active'|trans({},'messages'), 'u.isActive') }}</th>
+            <th scope="col">{{ knp_pagination_sortable(pagination, 'Last Update', 'u.updatedAt') }}</th>
+            <th>Azioni</th>
+        </tr>
+
+        {# table body #}
+        {% for user in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td><a href="{{ path('admin_roles_edit', {'id': user.roleObject.id}) }}">{{ user.roleObject.name }}</a></td>
+                <td>{{ user.isActive }}</td>
+                <td>{{ user.updatedAt | date('Y-m-d H:i:s') }}</td>
+                <td><a href="{{ path('admin_users_edit', {'id': user.id}) }}">{% trans %}Edit{% endtrans %}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,53 @@
+<div class="container-fluid pdfContainter">
+    <div class="row mainPageRow">
+        <div class="col-xs-8 mainPageLeft">
+            <h1 class="pdfMainPageTitle">{{ page.page.title }}</h1>
+            <hr class="afterTitle">
+            <br><br><br>
+            <p class="condensed">
+                {{ page.page.text|striptags('<br><b><i><u>')|raw }}
+            </p>
+            <br><br>
+            <table class="table-responsive catTablePdf">
+                <thead>
+                <tr>
+                    {% for category in categories %}
+                        <th class="pdfCatTableH">{{ category.name }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {% for category in categories %}
+                        <td><img class="catIcon{% if category.active == false %} disabled{% endif %}" src="{{ absolute_url(asset(upload_images_directory ~ '/' ~ category.icon)) }}"></td>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-4 text-center">
+            <img src="{{ absolute_url(asset(upload_images_directory ~ '/' ~ product.image)) }}" class="imagePdfProd">
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pdfContainerWhite">
+    <div class="col-xs-8">
+        <h1 class="pdfMainPageTitle blackSectionTitle">{% trans %}Applications{% endtrans %}</h1>
+        <hr class="afterTitle">
+        <br><br>
+        {% for category in categories %}
+            {% if category.active %}
+                <h4 class="applicationListTitle">{{ category.name }}</h4>
+                <p class="applicationListText">
+                    {% for app in category.applications %}
+                        • {{ app.name }}
+                    {% endfor %}
+                </p>
+            {% endif %}
+        {% endfor %}
+   </div>
+    <div class="col-xs-4">
+
+    </div>
+</div>

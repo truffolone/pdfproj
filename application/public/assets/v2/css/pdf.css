@@ -1,0 +1,406 @@
+@page {
+    size: A4;
+    margin: 0;
+}
+@media print {
+    html, body {
+        width: 210mm;
+        height: 297mm;
+    }
+}
+
+@font-face {
+    font-family: 'DINOT-CondMedium';
+    src: url('../fonts/DINOT/DINOT-CondMedium.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-CondMedium.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-CondMedium.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-CondMedium.svg#DINOT-CondMedium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINOT-CondMediIta';
+    src: url('../fonts/DINOT/DINOT-CondMediIta.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-CondMediIta.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-CondMediIta.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-CondMediIta.svg#DINOT-CondMediIta') format('svg');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'DINOT-MediumItalic';
+    src: url('../fonts/DINOT/DINOT-MediumItalic.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-MediumItalic.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-MediumItalic.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-MediumItalic.svg#DINOT-MediumItalic') format('svg');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'DINOT-BlackItalic';
+    src: url('../fonts/DINOT/DINOT-BlackItalic.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-BlackItalic.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-BlackItalic.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-BlackItalic.svg#DINOT-BlackItalic') format('svg');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'DINOT-CondIta';
+    src: url('../fonts/DINOT/DINOT-CondIta.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-CondIta.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-CondIta.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-CondIta.svg#DINOT-CondIta') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'DINOT-CondBlack';
+    src: url('../fonts/DINOT/DINOT-CondBlack.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-CondBlack.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-CondBlack.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-CondBlack.svg#DINOT-CondBlack') format('svg');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINOT-Cond';
+    src: url('../fonts/DINOT/DINOT-Cond.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-Cond.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-Cond.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-Cond.svg#DINOT-Cond') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINOT';
+    src: url('../fonts/DINOT/DINOT.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT.woff') format('woff'),
+    url('../fonts/DINOT/DINOT.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT.svg#DINOT') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINOT-CondBlackIta';
+    src: url('../fonts/DINOT/DINOT-CondBlackIta.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-CondBlackIta.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-CondBlackIta.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-CondBlackIta.svg#DINOT-CondBlackIta') format('svg');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'DINOT-CondBold';
+    src: url('../fonts/DINOT/DINOT-CondBold.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-CondBold.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-CondBold.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-CondBold.svg#DINOT-CondBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINOT';
+    src: url('../fonts/DINOT/DINOT-Italic.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-Italic.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-Italic.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-Italic.svg#DINOT-Italic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'DINOT-CondBoldIta';
+    src: url('../fonts/DINOT/DINOT-CondBoldIta.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-CondBoldIta.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-CondBoldIta.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-CondBoldIta.svg#DINOT-CondBoldIta') format('svg');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'DINOT';
+    src: url('../fonts/DINOT/DINOT-Light.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-Light.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-Light.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-Light.svg#DINOT-Light') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINOT';
+    src: url('../fonts/DINOT/DINOT-Bold.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-Bold.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-Bold.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-Bold.svg#DINOT-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINOT-CondLight';
+    src: url('../fonts/DINOT/DINOT-CondLight.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-CondLight.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-CondLight.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-CondLight.svg#DINOT-CondLight') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINOT-CondLightIta';
+    src: url('../fonts/DINOT/DINOT-CondLightIta.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-CondLightIta.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-CondLightIta.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-CondLightIta.svg#DINOT-CondLightIta') format('svg');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'DINOT-LightItalic';
+    src: url('../fonts/DINOT/DINOT-LightItalic.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-LightItalic.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-LightItalic.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-LightItalic.svg#DINOT-LightItalic') format('svg');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'DINOT-BoldItalic';
+    src: url('../fonts/DINOT/DINOT-BoldItalic.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-BoldItalic.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-BoldItalic.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-BoldItalic.svg#DINOT-BoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'DINOT';
+    src: url('../fonts/DINOT/DINOT-Black.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-Black.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-Black.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-Black.svg#DINOT-Black') format('svg');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINOT';
+    src: url('../fonts/DINOT/DINOT-Medium.woff2') format('woff2'),
+    url('../fonts/DINOT/DINOT-Medium.woff') format('woff'),
+    url('../fonts/DINOT/DINOT-Medium.ttf') format('truetype'),
+    url('../fonts/DINOT/DINOT-Medium.svg#DINOT-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+
+.pdfHeader {
+    background-color: #00384f;
+}
+
+.navbar {
+    border-radius: 0 !important;
+    padding: 7mm;
+    height: 50mm;
+}
+
+.navbar:before {
+    position: relative;
+}
+
+.navbar:after {
+    content:'';
+    position: absolute;
+    top: 100%;
+    left: 43mm;
+    margin-left: -20mm;
+    width: 0;
+    height: 0;
+    border-top: solid 9mm #003D50;
+    border-left: solid 6mm transparent;
+    border-right: solid 6mm transparent;
+}
+
+.topLogoImg {
+    margin-left: 16mm;
+}
+
+.pdfContainter {
+    padding-left: 20mm;
+    padding-right: 20mm;
+    overflow-y: visible;
+    overflow-x: hidden;
+    background-color: #4AB7A9;
+    height: 100%;
+    margin-bottom: -15%;
+    padding-top: 15mm;
+    display: flex;
+}
+
+.imagePdfProd {
+    left: 50%;
+    right: 50%;
+    max-width: 100%;
+    max-height: 100%;
+    margin-top: 20mm;
+}
+
+.pdfFooter:before {
+    content:'';
+    position: relative;
+    bottom: 0;
+    left: 43mm;
+    margin-left: -20mm;
+    width: 0;
+    height: 10mm;
+    border-top: solid 9mm #FFFFFF;
+    border-left: solid 6mm transparent;
+    border-right: solid 6mm transparent;
+}
+
+.pdfFooter {
+    content: ' ';
+    height: 10mm;
+    background-color: #003D50;
+}
+
+body {
+    height:100%;
+    font-family: 'DINOT', Fallback, sans-serif;
+}
+
+.pdfMainPageTitle {
+    font-weight: bold;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 8.1mm;
+}
+
+hr.afterTitle {
+    border-top: 2px solid #00384f;
+    width: 20mm;
+    float: left;
+    display: grid;
+}
+
+.mainPageRow {
+    display: flex;
+    display : -webkit-flex;
+}
+
+p.condensed {
+    font-family: 'DINOT-Cond', Fallback, sans-serif;
+    padding-right: 10%;
+    font-size: 4.6mm;
+    color: #003D50;
+    font-weight: 500;
+    word-spacing: 1.2mm;
+}
+
+img.catIcon {
+    max-width: 20mm;
+    padding-top: 3mm;
+}
+
+th.pdfCatTableH {
+    width: 25mm;
+    text-align: center;
+    vertical-align: middle;
+    font-size: large;
+    padding-bottom: 2mm;
+}
+
+.mainPageLeft {
+    height: 100%;
+}
+
+.catTablePdf {
+    border-collapse: collapse;
+    position: absolute;
+    bottom: 20%;
+}
+
+.catTablePdf td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+img.disabled {
+    filter: grayscale(50%) saturate(0.25) opacity(0.5) brightness(130%) invert(100%);
+    -webkit-filter: grayscale(50%) saturate(0.25) opacity(0.5) brightness(130%) invert(100%);
+}
+
+.catTablePdf td, table th {
+    border: 2px ridge white;
+}
+.catTablePdf tr:first-child th {
+    border-top: 0;
+}
+.catTablePdf tr:last-child td {
+    border-bottom: 0;
+}
+.catTablePdf tr td:first-child,
+.catTablePdf tr th:first-child {
+    border-left: 0;
+}
+.catTablePdf tr td:last-child,
+.catTablePdf tr th:last-child {
+    border-right: 0;
+}
+
+.blackSectionTitle {
+    color: #4AB7A9;
+}
+
+.pdfContainerWhite {
+    background-color: #FFFFFF;
+    padding-left: 20mm;
+    padding-right: 20mm;
+    overflow-y: visible;
+    overflow-x: hidden;
+    height: 100%;
+    margin-bottom: 0;
+}
+
+h4.applicationListTitle {
+    font-family: 'DINOT-CondBold', Fallback, sans-serif;
+    padding-right: 10%;
+    font-size: 4.5mm;
+    color: #003D50;
+    font-weight: 500;
+    word-spacing: 1.2mm;
+}
+
+p.applicationListText {
+    font-family: 'DINOT-Cond', Fallback, sans-serif;
+    padding-right: 10%;
+    font-size: 4.5mm;
+    color: #003D50;
+    font-weight: 500;
+    word-spacing: 1.2mm;
+}
+
+.pdfContainerGrey {
+    background-color: #eeeeee;
+    padding-left: 20mm;
+    padding-right: 20mm;
+    overflow-y: visible;
+    overflow-x: hidden;
+    height: 100%;
+    margin-bottom: 0;
+}

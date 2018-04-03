@@ -1,0 +1,41 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        our_db_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+            provider: our_db_provider
+            form_login:
+                login_path: login
+                check_path: login
+                #csrf_token_generator: security.csrf.token_manager
+                default_target_path: admin_dashboard
+                always_use_default_target_path: true
+                failure_path: login_failed
+                remember_me: true
+            logout:
+                path: /logout
+                target: login
+                delete_cookies: ~
+                handlers: [truffolone_logoutlistener]
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                always_remember_me: true
+            logout_on_user_change: false
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/logout, roles: IS_AUTHENTICATED_FULLY }
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]

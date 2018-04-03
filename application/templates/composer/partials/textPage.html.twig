@@ -1,0 +1,12 @@
+<form id="textPageForm" role="form" method="POST" action="{{ path('composer_send_text_page', {'productId': productId, 'id': textPageId}) }}">
+
+    <!-- Text Form -->
+    <div class="form-group">
+        <label for="textPage_title">{% trans %}Page Title{% endtrans %}</label>
+        <input class="form-control" name="title" id="textPage_title" value="{{ textPage.title }}" placeholder="{% trans %}Page Title{% endtrans %}">
+    </div>
+    <div class="form-group">
+        <label for="textPage_text">{% trans %}Page Text{% endtrans %}</label>
+        <textarea id="textPage_text" class="form-control" name="text">{{ textPage.text }}</textarea>
+    </div>
+</form>

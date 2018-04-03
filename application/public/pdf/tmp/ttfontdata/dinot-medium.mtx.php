@@ -1,0 +1,37 @@
+<?php
+$name='DINOT-Medium';
+$type='TTF';
+$desc=array (
+  'CapHeight' => 712.0,
+  'XHeight' => 507.0,
+  'FontBBox' => '[-110 -232 1138 1000]',
+  'Flags' => 4,
+  'Ascent' => 1000.0,
+  'Descent' => -232.0,
+  'Leading' => 0.0,
+  'ItalicAngle' => 0.0,
+  'StemV' => 109.0,
+  'MissingWidth' => 568.0,
+);
+$unitsPerEm=1000;
+$up=-172;
+$ut=70;
+$strp=277;
+$strs=70;
+$ttffile='/var/www/html/pdfproj/application/vendor/mpdf/mpdf/src/Config/../../ttfonts/DINOT-Medium.ttf';
+$TTCfontID='0';
+$originalsize=51412;
+$sip=false;
+$smp=false;
+$BMPselected=false;
+$fontkey='dinot-medium';
+$panose=' 0 0 2 b 6 4 2 1 1 2 1 2';
+$haskerninfo=false;
+$haskernGPOS=false;
+$hassmallcapsGSUB=false;
+$fontmetrics='win';
+// TypoAscender/TypoDescender/TypoLineGap = 764, -236, 288
+// usWinAscent/usWinDescent = 1041, -237
+// hhea Ascent/Descent/LineGap = 1041, -237, 10
+$useOTL=0x0000;
+$rtlPUAstr='';

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/gvfiltri_favicon.png') }}">
+
+    <title>{% block title %} - Admin | GV Filtri{% endblock %}</title>
+
+    {% block css %}
+        <link href="{{ asset('assets/v2/css/bootstrap.min.css') }}" rel="stylesheet">
+
+        <!-- Gritter -->
+        <link href="{{ asset('assets/v2/js/plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">
+
+        <!-- Toastr style -->
+        <link href="{{ asset('assets/v2/css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
+
+        <link href="{{ asset('assets/v2/css/animate.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/v2/css/style.css') }}" rel="stylesheet">
+    {% endblock %}
+
+</head>
+
+<body>
+
+<div id="wrapper">
+    <!-- navigation -->
+    {% include 'layouts/parts/menu.html.twig' %}
+
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <!-- topbar navigation -->
+        {% include 'layouts/parts/topbar.html.twig' %}
+
+        <!-- page top -->
+        {% block pageTop %}{% endblock %}
+
+        <!-- main page -->
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <!-- messages -->
+                <div class="col-md-12" id="systemMessages">
+                    {% for message in app.flashes('info') %}
+                        <div class="alert alert-info alert-dismissable" role="alert">
+                            <strong>Info!</strong> {{ message }}
+                        </div>
+                    {% endfor %}
+
+                    {% for message in app.flashes('warning') %}
+                        <div class="alert alert-warning alert-dismissable" role="alert">
+                            <strong>Warning!</strong> {{ message }}
+                        </div>
+                    {% endfor %}
+
+                    {% for message in app.flashes('error') %}
+                        <div class="alert alert-danger alert-dismissable" role="alert">
+                            <strong>Error!</strong> {{ message }}
+                        </div>
+                    {% endfor %}
+
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success alert-dismissable" role="alert">
+                            <strong>Success!</strong> {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-lg-12">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                {% block footer %}{% endblock %}
+            </div>
+            <div>
+                <strong>Copyright</strong> Echo Creative Company &copy; 2014-2018
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block javascripts %}
+    <!-- Mainly scripts -->
+    <script src="{{ asset('assets/v2/js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('assets/v2/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/v2/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+    <script src="{{ asset('assets/v2/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+
+    <!-- Toastr -->
+    <script src="{{ asset('assets/v2/js/plugins/toastr/toastr.min.js') }}"></script>
+
+    <!-- font awesome -->
+    <script defer src="{{ asset('assets/js/fontawesome-all.js') }}"></script>
+
+    <!-- jQuery UI -->
+    <script src="{{ asset('assets/v2/js/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{{ asset('assets/v2/js/inspinia.js') }}"></script>
+    <script src="{{ asset('assets/v2/js/plugins/pace/pace.min.js') }}"></script>
+    <script src="{{ asset('assets/v2/js/gvFiltri/global.js') }}"></script>
+
+    <!-- spinner functions -->
+    <script>
+        function openLoading()
+        {
+            $('#page-wrapper').children('#page-wrapper').toggleClass('sk-loading');
+        }
+
+        function closeLoading()
+        {
+            $(".customSpinner").hide();
+        }
+
+        openLoading();
+    </script>
+{% endblock %}
+</body>
+</html>

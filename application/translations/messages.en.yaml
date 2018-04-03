@@ -1,0 +1,173 @@
+#Users
+User List: User List
+Users Found: User(s) Found
+Users: Users
+Create New User: Create a New User
+Username: Username
+Edit User: Edit User
+Save User: Save User
+Password: Password
+
+#Roles
+Roles: user Roles
+Slug: Slug
+Role Name: Role name
+Create a New Role: Create a New Role
+Edit a Role: Edit Role
+Roles List: Roles List
+Roles Found: Role(s) Found
+Role: Role
+Save Role: Save Role
+
+#Categories
+Categories: Markets
+Categories List: Markets List
+Create New Category: Create a New Market
+Categories Found: Market(s) Found
+Edit a Category: Edit Market
+Save Category: Save Market
+Icon: Icon
+You are going to delete a Category: You are going to delete a Market
+You are going to edit a Category: You are going to edit a Market
+
+#Applications
+Applications: Applications
+Application: Application
+Create New Application: Create an Application
+Edit an Application: Edit Application
+Applications List: Applications List
+Applications Found: Application(s) Found
+Save Application: Save Application
+You are going to edit an Application: You are going to edit an Application
+You are going to delete an Application: You are going to delete an Application
+
+#Products
+Products: Products
+Product: Product
+Create New Product: Create a new Product
+Edit a Product: Edit Product
+Products List: Products List
+Products Found: Product(s) Found
+Save Product: Save Product
+Product Name: Product Name
+The Product has been generated correctly: The product has been Created
+Edit Product Name: Edit Product Name
+Save Product Name: Save Product Name
+The product does not exist: Product not Found
+Revision: Revision
+New: New
+Change: Change
+Image: Image
+You are going to delete a Product: You are going to delete a Product
+You are going to edit a Product: You are going to edit a Product
+Download PDF: Download PDF
+Delete Product: Delete Product
+Get Download Link: Get Download Link
+This is a public download link for the PDF: This is a public download link for the PDF
+
+#Compiler
+PDF Compiler: PDF Compiler
+Main Page: Main Element
+Add a Page: Add an Element
+Page Type: Element Type
+Simple Text: Simple Text
+List of Items: List of Items
+Simple Table: Table
+Select a Page Type: Select Element Type
+Page Title: Element Title
+Create Page: Create Element
+Main Page Title: Title Main Element
+Main Page Content: Main Element Content
+Category and Applications: Markets and Applications
+Selectable Applications: Selectable Applications
+Selected Applications: Selected Applications
+You have not selected a page to work on: You have yet to choose an element to work on
+Start with a Main Page: Start with a Main Element
+View Active Pages: View Active Elements
+Selected Pages: Selected Elements
+Referred Product: Referred Product
+Edit Basic Data: Edit Base Data
+Note: Notes
+Create a new page attached to the product document: Create a new element attached to the product document
+Document Controls: Document Controls
+Save Changes: Save Changes
+Document Title: Document Title
+Document Description: Document Description
+Elements generated: Elements generated
+
+####Compiler JS
+A problem occurred while creating the page: A problem occurred while creating the element
+Add Element to the List: Add Element to the List
+Section Title: Section Title
+Element Name: Element Name
+Element Value: Element Value
+Text Content: Text Content
+Load an Image: Upload an Image
+Save Changes and add a new Page: Save Changes and add a new Element
+Discard Changes and add a new Page: Discard Changes and add a new Element
+Select an Empty Template to Work on: Select an Empty Template to Work on
+Load Template from an Existing Page: Load Template from an Existing Element
+Add an Empty Page: Add an Empty Element
+Add a Page From an Existing One: Add an Element From an Existing One
+There has been an error during page creation, check the server log: There has been an error during element creation, check the server log
+Unsaved changes will be lost: Unsaved changes will be lost
+There was a problem loading the document: There was a problem loading the document
+There was a problem loading the product: There was a problem loading the product
+There was a problem loading the Main Page: There was a problem loading the Main Page
+There was a problem loading the Main Page Ref: There was a problem loading the Main Page Ref (2)
+Main Page Editor Initialized: Main Element Editor Initialized
+Main Page Saved: Main Element Saved
+Error while creating the product, please go back and check the existing products: Error while creating the product, please go back and check the existing products
+Page Type Not Allowed: Element Type Not Allowed
+Page Not Found: Element Not Found
+Text Page Editor Initialized: Text Element Editor Initialized
+Image Page Editor Initialized: Image Element Editor Initialized
+Radio Page Editor Initialized: Radio Element Editor Initialized
+Table Page Editor Initialized: Table Element Editor Initialized
+Text Page Saved: Text Element Saved
+Image Page Saved: Image Element Saved
+Radio Page Saved: Radio Element Saved
+Table Page Saved: Table Element Saved
+There was a problem loading the Document: There was a problem loading the Document
+File Upload Failed: File Upload Failed
+Page Removed: Element Removed
+Confirm page deletion: Confirm element deletion
+Page Text: Add Element
+Unsaved Changes, do you want to continue?: Unsaved Changes, do you want to continue?
+
+#Global
+Edit: Edit
+Name: name
+Created: Created
+Last Edit: Last Edit
+Description: Description
+Email: Email
+Active: Active
+Admin Area: Admin Area
+Close: Close
+Dashboard: Dashboard
+Catalog: Catalog
+GV Filtri: GV Filtri
+System Error: System Error
+Drop files here or click to upload: Drop files here or click to upload
+Cancel: Cancel
+Continue: Continue
+Actions: Actions
+Are you sure you want to continue: Are you sure you want to continue
+Copy: Copy
+Stop: Stop
+
+#Flash Messages
+Warning: Warning
+Error: Error
+
+#Login
+Login: Login
+Make Login: Make Login
+Logout: Logout
+Make Logout: Make Logout
+
+#API
+Page Type %pageType% is not allowed: Element Type %pageType% is not allowed
+Page ID is not valid: Element ID is not valid
+Cannot load page from service: Cannot load element from service

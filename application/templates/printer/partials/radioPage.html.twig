@@ -1,0 +1,12 @@
+<div class="container-fluid {% if loop.index is odd %}pdfContainerWhite{% else %}pdfContainerGrey{% endif %}">
+    <div class="col-xs-12">
+        <h1 class="pdfMainPageTitle blackSectionTitle">{{ page.page.title }}</h1>
+        <hr class="afterTitle">
+        <br><br><br>
+        <ul>
+            {% for anv in page.page.attributeNameValues %}
+                <li>{{ anv.attributeName.name }} => {{ anv.attributeValue.value }}</li>
+            {% endfor %}
+        </ul>
+   </div>
+</div>

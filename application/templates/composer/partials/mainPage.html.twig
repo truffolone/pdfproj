@@ -1,0 +1,51 @@
+<form id="mainPageForm" role="form" method="POST" action="{{ path('composer_send_main_page', {'id': id}) }}">
+
+    <!-- Product Form -->
+    <div class="form-group">
+        <label for="product_name">{% trans %}Product Name{% endtrans %}</label>
+        <input class="form-control" name="product[name]" id="product_name" value="{{ product.name }}" placeholder="{% trans %}Product Name{% endtrans %}" required>
+    </div>
+    <div class="fileinput fileinput-new" data-provides="fileinput">
+        <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+            {% if product.image != '' %}
+                <img class="previewProductImage" src="{{ asset(upload_images_directory ~ '/' ~ product.image) }}">
+            {% endif %}
+        </div>
+        <div>
+            <span class="btn btn-default btn-file">
+                <span class="fileinput-new">{% trans %}New{% endtrans %}</span>
+                <span class="fileinput-exists">{% trans %}Change{% endtrans %}</span>
+                <span class="fileinput-filename">{% trans %}Image{% endtrans %}</span>
+                <input type="file" id="mainPage_image" class="form-control" name="product[image]">
+            </span>
+            <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="product_description">{% trans %}Product Description{% endtrans %}</label>
+        <textarea id="product_description" class="form-control" name="product[description]">{{ product.description }}</textarea>
+    </div>
+
+    <!-- Main Page Form -->
+    <!--<div class="form-group">
+        <label for="mainPage_title">{% trans %}Document Title{% endtrans %}</label>
+        <input class="form-control" name="mainPage[title]" id="product_name" value="{{ mainPage.title }}" placeholder="{% trans %}Document Title{% endtrans %}" required>
+    </div>
+    <div class="form-group">
+        <label for="mainPage_text">{% trans %}Document Description{% endtrans %}</label>
+        <textarea id="mainPage_text" class="form-control" name="mainPage[text]">
+            {{ mainPage.text }}
+        </textarea>
+    </div>-->
+
+    <!-- Applicazioni -->
+    <div class="form-group">
+        <label for="mainPage_applications">{% trans %}Applications{% endtrans %}</label>
+        <select id="mainPage_applications" name="mainPage[applications][]" class="form-control dual_select" multiple
+                required>
+            {% for application in allApplications %}
+                <option value="{{ application.id }}"{% if application.id in mainPageApplications %} selected{% endif %}>{{ application.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</form>

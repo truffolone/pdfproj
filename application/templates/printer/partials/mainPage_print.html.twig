@@ -1,0 +1,57 @@
+<div class="pdfContainer keep-together">
+    <div class="row mainPageRow">
+        <img src="{{ absolute_url(asset('images/triangolo_blu.png')) }}" class="triangleTop">
+        <h1 class="pdfMainPageTitle">{{ page.page.title }}</h1>
+        <table border="0" >
+            <tr>
+                <td valign="top" >
+                    <div class="righettaBlu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <br>
+                    <p class="condensed">
+                        {{ page.page.text|striptags('<br><b><i><u><h1><hr><ul><li><ol><strong><p>')|raw }}
+                    </p>
+                    <br><br>
+                    <br>
+                 <table class="catTableMarkets" style="border: 1px solid #4AB7A9;" >
+
+                        <tr class="thMarkets" style="border: 1px solid white;">
+                            {% for category in categories %}
+                                <td class="pdfCatTableH"{% if loop.index0 > 0 %} style="border-left: 1px solid white;"{% endif %}>{{ category.name }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr class="tdMarkets">
+                            {% for category in categories %}
+                                <td class="tdMarkets" style="border-top: 1px solid white;{% if loop.index0 > 0 %} border-left: 1px solid white;{% endif %}"><img class="catIcon{% if category.active == false %} disabled{% endif %}" src="{{ absolute_url(asset(upload_images_directory ~ '/' ~ category.icon)) }}"></td>
+                            {% endfor %}
+                        </tr>
+                    </table>
+                </td>
+                <td valign="bottom" align="center">
+                    <img src="{{ absolute_url(asset(upload_images_directory ~ '/' ~ product.image)) }}" style="margin-left: 10mm; margin-bottom: -20%; max-width: 80mm;">
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="pdfContainerWhiteMP keep-together">
+    <div class="applicationsList">
+        <h1 class="pdfMainPageTitleAMP blackSectionTitle" style="margin-top: -20mm;">{% trans %}Applications{% endtrans %}</h1>
+        <div class="righettaBluA">&nbsp;&nbsp;</div>
+        <div class="listOfApplications">
+            {% for category in categories %}
+                {% if category.active %}
+                    <p class="applicationListTitle">{{ category.name }}</p>
+                    <p class="applicationListText">
+                        {% for app in category.applications %}
+                            • {{ app.name }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-xs-4">
+
+    </div>
+</div>

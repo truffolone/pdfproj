@@ -1,0 +1,173 @@
+#Users
+User List: Lista Utenti
+Users Found: Utenti Trovati
+Users: Utenti
+Create New User: Crea un nuovo Utente
+Username: Nome Utente
+Edit User: Modifica Utente
+Save User: Salva l'utente
+Password: Password
+
+#Roles
+Roles: Ruoli Utenti
+Slug: Slug
+Role Name: Nome Ruolo
+Create a New Role: Crea un nuovo Ruolo
+Edit a Role: Modifica un Ruolo
+Roles List: Lista Ruoli
+Roles Found: Ruoli Trovati
+Role: Ruolo
+Save Role: Salva il Ruolo
+
+#Categories
+Categories: Settori
+Categories List: Lista Settori
+Create New Category: Crea un nuovo Settore
+Categories Found: Settori Trovati
+Edit a Category: Modifica un Settore
+Save Category: Salva il Settore
+Icon: Icona
+You are going to delete a Category: Stai per cancellare una Categoria
+You are going to edit a Category: Stai per modificare una Categoria
+
+#Applications
+Applications: Applicazioni
+Application: Applicazione
+Create New Application: Crea una nuova Applicazione
+Edit an Application: Modifica un'Applicazione
+Applications List: Lista Applicazioni
+Applications Found: Applicazioni Trovate
+Save Application: Salva l'applicazione
+You are going to edit an Application: Stai per modificare un'Applicazione
+You are going to delete an Application: Stai per cancellare un'Applicazione
+Are you sure you want to continue: Sei sicuro di voler continuare
+
+#Products
+Products: Prodotti
+Create New Product: Crea un nuovo Prodotto
+Edit a Product: Modifica un Prodotto
+Products List: Lista Prodotti
+Products Found: Prodotti Trovati
+Save Product: Salva il Prodotto
+Product Name: Nome Prodotto
+The Product has been generated correctly: Il prodotto è stato generato correttamente
+Edit Product Name: Modifica il nome Prodotto
+Save Product Name: Salva il nome Prodotto
+The product does not exist: Il prodotto non esiste
+Revision: Revisione
+New: Nuova
+Change: Cambia
+Image: Immagine
+You are going to delete a Product: Stai per cancellare un Prodotto
+You are going to edit a Product: Stai per modificare un Prodotto
+Product: Prodotto
+Download PDF: Download PDF
+Delete Product: Cancella il Prodotto
+Get Download Link: Ottieni il Link di Download
+This is a public download link for the PDF: Questo link è di pubblico accesso per il download del PDF
+
+#Compiler
+PDF Compiler: Compilatore PDF
+Main Page: Pagina Principale
+Add a Page: Aggiungi una Pagina
+Page Type: Tipo di Pagina
+Select a Page Type: Seleziona il tipo di Elemento
+Simple Text: Testo Semplice
+List of Items: Lista di Caratteristiche
+Simple Table: Tabella
+Page Title: Titolo Pagina
+Create Page: Crea Pagina
+Main Page Title: Titolo Pagina Principale
+Main Page Content: Contenuto Pagina Principale
+Category and Applications: Categorie ed Applicazioni
+Selectable Applications: Applicazioni Selezionabili
+Selected Applications: Applicazioni Selezionate
+You have not selected a page to work on: Non hai selezionato nessuna pagina su cui lavorare
+Start with a Main Page: Comincia con una Pagina Principale!
+View Active Pages: Vedi le pagine attualmente attive
+Selected Pages: Pagine Selezionate
+Referred Product: Prodotto Collegato
+Edit Basic Data: Edita i dati di base
+Note: Note
+Create a new page attached to the product document: Crea una nuova pagina per il documento del prodotto
+Document Controls: Controlli Pagina Documento
+Save Changes: Salva i Cambiamenti
+Document Title: Titolo Documento
+Document Description: Testo Centrale del Documento
+Elements generated: Elementi Generati
+
+####Compiler JS
+A problem occurred while creating the page: Si è verificato un problema durtante la generazione della pagina
+Add Element to the List: Aggiungi un elemento alla lista
+Section Title: Titolo della Sezione
+Element Name: Nome Elemento
+Element Value: Valore Elemento
+Text Content: Contenuto Testuale
+Load an Image: Carica un'Immagine
+Save Changes and add a new Page: Salva i cambiamenti e inserisci una nuova pagina
+Discard Changes and add a new Page: Cancella le modifiche e inserisci una nuova pagina
+Select an Empty Template to Work on: Seleziona un template vuoto su cui lavorare
+Load Template from an Existing Page: Seleziona un template a partire da una pagina esistente
+Add an Empty Page: Aggiungi una pagina Vuota
+Add a Page From an Existing One: Aggiungi una pagina a partire dall'elemento selezionato
+There has been an error during page creation, check the server log: C'è stato un errore durante la creazione della pagina, maggiori informazioni nei log del server
+Unsaved changes will be lost: Tutte le modifiche non salvate andranno perse
+There was a problem loading the document: C'è stato un problema durante il caricamento del Documento Prodotto
+There was a problem loading the product: C'è stato un problema durante il caricamento del prodotto
+There was a problem loading the Main Page: C'è stato un problema durante il caricamento della pagina principale
+There was a problem loading the Main Page Ref: C'è stato un problema durante il caricamento della pagina principale (2)
+Main Page Editor Initialized: Correttamente preparato l'editor per la Main Page
+Main Page Saved: La pagina principale è stata salvata con successo
+Error while creating the product, please go back and check the existing products: Si è verificato un errore durante la generazione del documento, controllare nella lista prodotti
+Page Type Not Allowed: Il tipo di pagina scelto non è consentito
+Page Not Found: Pagina non Trovata
+Text Page Editor Initialized: Correttamente preparato l'editor per la Text Page
+Image Page Editor Initialized: Correttamente preparato l'editor per la Image Page
+Radio Page Editor Initialized: Correttamente preparato l'editor per la Radio Page
+Table Page Editor Initialized: Correttamente preparato l'editor per la Table Page
+Text Page Saved: Pagina di testo Salvata
+Image Page Saved: Immagine Salvata
+Radio Page Saved: Pagina Radio Salvata
+Table Page Saved: Pagina Tabella Salvata
+There was a problem loading the Document: C'è stato un errore nel caricamento del documento
+File Upload Failed: There was a problem uploading the image
+Page Removed: Pagina Correttamente Rimossa
+Confirm page deletion: Confermi l'eliminazione della pagina
+Page Text: Aggiungi un Elemento
+Unsaved Changes, do you want to continue?: Ci sono delle modifiche non salvate, continuare lo stesso?
+
+#Global
+Edit: Modifica
+Name: Nome
+Created: Data Creazione
+Last Edit: Data Ultima Modifica
+Description: Descrizione
+Email: Email
+Active: Attivo
+Admin Area: Area Amministrazione
+Close: Chiudi
+Dashboard: Pannello di Controllo
+Catalog: Catalogo
+GV Filtri: GV Filtri
+System Error: Errore del Sistema
+Drop files here or click to upload: Trascina i file qui o clicca per caricare
+Cancel: Annulla
+Continue: Prosegui
+Actions: Azioni
+Copy: Copia
+Stop: Stop
+
+#Flash Messages
+Warning: Attenzione
+Error: Errore
+
+#Login
+Login: Login
+Make Login: Effettua il Login
+Logout: Logout
+Make Logout: Disconnettiti
+
+#API
+Page Type %pageType% is not allowed: Il tipo di Pagina %pageType% non è stato riconosciuto
+Page ID is not valid: L'ID della pagina non è valida
+Cannot load page from service: Non è stato possibile caricare la pagina

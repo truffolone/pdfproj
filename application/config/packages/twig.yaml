@@ -1,0 +1,8 @@
+twig:
+    paths: ['%kernel.project_dir%/templates']
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    globals:
+      upload_images_directory: 'images/uploads/categories'
+      upload_images_pdf_directory: 'images/uploads/pdf'
+      fonts_directory: 'assets/v2/fonts'

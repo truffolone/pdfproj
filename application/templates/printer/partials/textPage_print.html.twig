@@ -1,0 +1,13 @@
+<div class="keep-together {% if loop.index is odd %}pdfContainerWhite{% else %}pdfContainerGrey{% endif %}"{% if loop.index == pages|length %} style="height:100%;"{% endif %}>
+    <div class="textPage">
+        {% if page.page.title and page.page.title != '' %}
+            <h1 class="pdfMainPageTitleA blackSectionTitle">{{ page.page.title }}</h1>
+            <div class="righettaBluA">&nbsp;&nbsp;</div>
+        {% endif %}
+        <div class="listOfApplications">
+            <p class="condensed_small">
+                {{ page.page.text|striptags('<br><b><i><u>')|raw }}
+            </p>
+        </div>
+   </div>
+</div>

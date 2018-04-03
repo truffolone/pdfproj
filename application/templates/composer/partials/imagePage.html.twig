@@ -1,0 +1,25 @@
+<form id="imagePageForm" enctype="multipart/form-data" role="form" method="POST" action="{{ path('composer_send_image_page', {'productId': productId, 'id': imagePageId}) }}">
+
+    <!-- Image Form -->
+    <div class="form-group">
+        <label for="imagePage_title">{% trans %}Page Title{% endtrans %}</label>
+        <input class="form-control" name="title" id="imagePage_title" value="{{ imagePage.title }}" placeholder="{% trans %}Page Title{% endtrans %}">
+    </div>
+    <div class="fileinput fileinput-new" data-provides="fileinput">
+        <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+        <div>
+            <span class="btn btn-default btn-file">
+                <span class="fileinput-new">{% trans %}New{% endtrans %}</span>
+                <span class="fileinput-exists">{% trans %}Change{% endtrans %}</span>
+                <span class="fileinput-filename">{% trans %}Image{% endtrans %}</span>
+                <input type="file" id="imagePage_file" class="form-control" name="image">
+            </span>
+            <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+        </div>
+    </div>
+    {% if imagePageId > 0 %}
+        <div class="form-group">
+            <img src="{{ asset(upload_images_pdf_directory ~ '/' ~ imagePage.image) }}" style="max-height:400px;">
+        </div>
+    {% endif %}
+</form>

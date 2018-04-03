@@ -1,0 +1,936 @@
+{% extends 'layouts/adminv2.html.twig' %}
+
+{% block title %}{% trans %}Edit a Product{% endtrans %} {{ parent() }}{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+
+    <link href="{{ asset('assets/v2/css/plugins/dualListbox/bootstrap-duallistbox.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/v2/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block pageTop %}
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>{% trans %}Edit a Product{% endtrans %}</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('admin_products_list') }}">{% trans %}Products{% endtrans %}</a>
+                </li>
+                <li class="active">
+                    <strong>{% trans %}Edit a Product{% endtrans %}</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="col-lg-4">
+        <!-- Document Actions -->
+        <div class="ibox float-e-margins border-bottom">
+            <div class="ibox-title">
+                <h5>{% trans %}Document Controls{% endtrans %}</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="far fa-eye"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalSelect">
+                    <i class="far fa-plus-circle"></i> {% trans %}Add a Page{% endtrans %}
+                </button>
+
+                <button type="button" id="savePageButton" class="btn btn-primary pull-right" disabled="disabled">
+                    <i class="far fa-save"></i> {% trans %}Save Changes{% endtrans %}
+                </button>
+            </div>
+        </div>
+
+        <!-- Element List -->
+        <div class="ibox float-e-margins border-bottom">
+            <div class="ibox-title">
+                <h5>{% trans %}Elements generated{% endtrans %}</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="far fa-eye"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content" id="">
+                <ul id="elList" class="prodElementListmenu" style="list-style-type: none;padding:0;">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <!-- Document Edit Body -->
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>{% trans %}Edit a Product{% endtrans %} </h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="far fa-eye"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content" id="composerContent">
+
+            </div>
+        </div>
+    </div>
+
+    <!-- modal -->
+    <div class="modal inmodal fade" id="modalSelect" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans %}Close{% endtrans %}</span></button>
+                    <h4 class="modal-title">{% trans %}Add a Page{% endtrans %}</h4>
+                    <small class="font-bold">{% trans %}Create a new page attached to the product document{% endtrans %}</small>
+                </div>
+                <div class="modal-body">
+                    <p><strong>{% trans %}Warning{% endtrans %}!</strong> {% trans %}Unsaved changes will be lost{% endtrans %}</p>
+                    <div class="form-group">
+                        <select id="pageSelector" class="form-control">
+                            <option value="">{% trans %}Select a Page Type{% endtrans %}</option>
+                            <option value="text">{% trans %}Simple Text{% endtrans %}</option>
+                            <option value="list">{% trans %}List of Items{% endtrans %}</option>
+                            <option value="table">{% trans %}Simple Table{% endtrans %}</option>
+                            <option value="image">{% trans %}Image{% endtrans %}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary" id="createPage">{% trans %}Create Page{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm modal -->
+    <div class="modal fade" role="dialog" aria-labelledby="modalConfirm" aria-hidden="true" id="modalConfirm" data-backdrop="false">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="myModalLabel">{% trans %}Warning{% endtrans %}</h2>
+                    <p><strong>{% trans %}Unsaved Changes, do you want to continue?{% endtrans %}</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="modal-btn-si">{% trans %}Continue Without Saving{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary" id="modal-btn-no">{% trans %}Stop{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('assets/v2/js/plugins/confirmation/confirmation.min.js') }}"></script>
+    <script src="{{ asset('assets/v2/js/plugins/tinymce/tinymce.min.js') }}"></script>
+
+    <script>
+        var productId = {{ product_id }};
+        var el = $("#composerContent");
+        var pageTypeList = ['main', 'text', 'list', 'table', 'image'];
+        var elList = $("#elList");
+        var pageElementCount = 0;
+        var modalSelect = $("#modalSelect");
+        var unsavedChanges = 0;
+
+        var modalConfirm = function(callback){
+            $("#modalConfirm").modal({keyboard: false});
+
+            $("#modal-btn-si").on("click", function(){
+                callback(true);
+                $("#modalConfirm").modal('hide');
+            });
+
+            $("#modal-btn-no").on("click", function(){
+                callback(false);
+                $("#modalConfirm").modal('hide');
+            });
+        };
+
+        $(document).ready(function() {
+            loadMainPage();
+            loadElementList();
+
+            $("#createPage").on('click', function() {
+                var pageTypeToCreate = $("#pageSelector").val();
+
+                if($.inArray(pageTypeToCreate, pageTypeList) < 0) {
+                    sendWarning('{% trans %}Page Type Not Allowed{% endtrans %}');
+                    return;
+                }
+
+                if(unsavedChanges === 1) {
+                    modalConfirm(function(confirm){
+                        if(confirm){
+                            if(pageTypeToCreate === 'text') {
+                                loadTextPage(0);
+                                formIsSaved();
+                            }
+
+                            if(pageTypeToCreate === 'image') {
+                                loadImagePage(0);
+                                formIsSaved();
+                            }
+
+                            if(pageTypeToCreate === 'list') {
+                                loadRadioPage(0);
+                                formIsSaved();
+                            }
+
+                            if(pageTypeToCreate === 'table') {
+                                loadTablePage(0);
+                                formIsSaved();
+                            }
+                        }else{
+                            modalSelect.modal('hide');
+                        }
+                    });
+                } else {
+                    if(pageTypeToCreate === 'text') {
+                        loadTextPage(0);
+                        formIsSaved();
+                    }
+
+                    if(pageTypeToCreate === 'image') {
+                        loadImagePage(0);
+                        formIsSaved();
+                    }
+
+                    if(pageTypeToCreate === 'list') {
+                        loadRadioPage(0);
+                        formIsSaved();
+                    }
+
+                    if(pageTypeToCreate === 'table') {
+                        loadTablePage(0);
+                        formIsSaved();
+                    }
+                }
+
+            });
+        });
+
+        /**
+         * Page Loading
+         */
+
+        /** element list */
+        function loadElementList()
+        {
+            if(productId === 0) {
+                return;
+            }
+
+            var url = "{{ path('composer_load_document_list', {'id':product_id}) }}";
+            $.get(url, function(data){
+                if(data.status === 'success') {
+                    /** rendering list */
+                    elList.empty();
+                    $.each(data.documents, function(index,value){
+                        addElementToList(value.name, value.pageType, value.pageId);
+                    });
+                    bindListElements();
+                    return true;
+                } else {
+                    sendError(data.message);
+                    return false;
+                }
+            }).fail(function(data){
+                sendError('System Error');
+                return false;
+            });
+        }
+
+        /** Table Page */
+        function loadTablePage(id)
+        {
+            var urlToCall = "{{ path('composer_load_table_page') }}/" + productId + "/" + id;
+            $.get(urlToCall, function(data){
+                if(data.status === 'success') {
+                    sendSuccess(data.message);
+                    /** rendering page */
+                    el.empty().append($(data.data));
+                    afterTablePageLoaded();
+                    modalSelect.modal('hide');
+                    return true;
+                } else {
+                    sendError(data.message);
+                    return false;
+                }
+            }).fail(function(data){
+                sendError('System Error');
+                return false;
+            });
+        }
+
+        function afterTablePageLoaded()
+        {
+            tinyMCE.remove();
+
+            tinyMCE.init({
+                selector:'#tablePage_text',
+                height: 500,
+                theme: 'modern',
+                plugins: 'table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern code',
+                toolbar1: 'code | formatselect | bold italic strikethrough forecolor backcolor | fontselect fontsizeselect | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+                image_advtab: true,
+                fontsize_formats: '6pt 8pt 10pt 12pt 14pt 18pt 24pt 36pt',
+                table_default_attributes: {
+                    'border': '1'
+                },
+                setup: function(editor) {
+                    editor.on('change', function(e) {
+                        formIsChanged(e);
+                    });
+                }
+            });
+
+            bindAjaxFormTablePage('tablePageForm', 'savePageButton');
+        }
+
+        /** Radio Page */
+        function loadRadioPage(id)
+        {
+            var urlToCall = "{{ path('composer_load_radio_page') }}/" + productId + "/" + id;
+            $.get(urlToCall, function(data){
+                if(data.status === 'success') {
+                    sendSuccess(data.message);
+                    /** rendering page */
+                    el.empty().append($(data.data));
+                    afterRadioPageLoaded();
+                    modalSelect.modal('hide');
+                    return true;
+                } else {
+                    sendError(data.message);
+                    return false;
+                }
+            }).fail(function(data){
+                sendError('System Error');
+                return false;
+            });
+        }
+
+        function afterRadioPageLoaded()
+        {
+            $("#addRow").on('click', function(e){
+                e.preventDefault();
+
+                var nextElement = $(this).data("row") + 1;
+                var radioContainer = $("#radioContainer");
+                var nextTemplate = radioAddElementTemplate(nextElement);
+
+                radioContainer.append(nextTemplate);
+
+                bindDeleteRadioRow(nextElement);
+
+                $(this).data('row', nextElement);
+
+                formIsChanged(e);
+            });
+
+            $(".radioElementRemover").each(function(){
+                var elementToBind = $(this).data("row");
+
+                bindDeleteRadioRow(elementToBind);
+                formIsChanged('a');
+            });
+
+            bindAjaxFormRadioPage('radioPageForm', 'savePageButton');
+        }
+
+        function bindDeleteRadioRow(elementToBind)
+        {
+            $("#removeRow-" + elementToBind).on('click', function(e){
+                e.preventDefault();
+
+                var elementToRemove = $(this).data('row');
+
+                $("#radioContainer-" + elementToRemove).remove();
+            });
+        }
+
+        /** Image Page */
+        function loadImagePage(id)
+        {
+            var urlToCall = "{{ path('composer_load_image_page') }}/" + productId + "/" + id;
+            $.get(urlToCall, function(data){
+                if(data.status === 'success') {
+                    sendSuccess(data.message);
+                    /** rendering page */
+                    el.empty().append($(data.data));
+                    afterImagePageLoaded();
+                    modalSelect.modal('hide');
+                    return true;
+                } else {
+                    sendError(data.message);
+                    return false;
+                }
+            }).fail(function(data){
+                sendError('System Error');
+                return false;
+            });
+        }
+
+        function afterImagePageLoaded()
+        {
+            $(".fileinput").fileinput();
+
+            bindAjaxFormImagePage('imagePageForm', 'savePageButton');
+        }
+
+        /** Text Page */
+        function loadTextPage(id)
+        {
+            var urlToCall = "{{ path('composer_load_text_page') }}/" + productId + "/" + id;
+            $.get(urlToCall, function(data){
+                if(data.status === 'success') {
+                    sendSuccess(data.message);
+                    /** rendering page */
+                    el.empty().append($(data.data));
+                    afterTextPageLoaded();
+                    modalSelect.modal('hide');
+                    return true;
+                } else {
+                    sendError(data.message);
+                    return false;
+                }
+            }).fail(function(data){
+                sendError('System Error');
+                return false;
+            });
+        }
+
+        function afterTextPageLoaded()
+        {
+            tinyMCE.remove();
+
+            tinyMCE.init({
+                selector:'#textPage_text',
+                height: 500,
+                theme: 'modern',
+                plugins: 'charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern',
+                toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+                image_advtab: true,
+                content_css: [
+                    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                    '//www.tinymce.com/css/codepen.min.css'
+                ],
+                setup: function(editor) {
+                    editor.on('change', function(e) {
+                        formIsChanged(e);
+                    });
+                }
+            });
+
+            bindAjaxFormTextPage('textPageForm', 'savePageButton');
+        }
+
+        /** Main Page **/
+        function loadMainPage()
+        {
+            /** generating url */
+            var urlToCall = "{{ path('composer_load_main_page', {'id': product_id}) }}";
+            $.get(urlToCall, function(data) {
+                if(data.status === 'success') {
+                    sendSuccess(data.message);
+                    /** rendering page */
+                    el.empty().append($(data.data));
+                    afterMainPageLoaded();
+                    return true;
+                } else {
+                    sendError(data.message);
+                    return false;
+                }
+            }).fail(function(data){
+                sendError('System Error');
+                return false;
+            });
+        }
+
+        function afterMainPageLoaded()
+        {
+            /** product description textarea */
+            tinyMCE.remove();
+
+            tinyMCE.init({
+                selector:'#product_description',
+                height: 500,
+                theme: 'modern',
+                plugins: 'charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern',
+                toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+                image_advtab: true,
+                content_css: [
+                    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                    '//www.tinymce.com/css/codepen.min.css',
+                ],
+                setup: function(editor) {
+                    editor.on('change', function(e) {
+                        formIsChanged(e);
+                    });
+                }
+            });
+
+            /** applications dual list select */
+            $('.dual_select').bootstrapDualListbox({
+                selectorMinimalHeight: 160
+            });
+
+            /** product image */
+            $(".fileinput").fileinput();
+
+            /** binding form */
+            setTimeout(function(){
+                bindAjaxFormMainPage('mainPageForm', 'savePageButton');
+            }, 1000);
+        }
+
+        function addElementToList(pageName, pageType, pageId)
+        {
+            /** adding link */
+            var elementToAdd = linkListTemplate(pageName, pageType, pageId, pageElementCount);
+            if(pageType === 'mainPage') {
+                elList.prepend(elementToAdd);
+            } else {
+                elList.append(elementToAdd);
+            }
+
+            /** Increasing Page Counter */
+            pageElementCount = pageElementCount + 1;
+        }
+
+        function loadEditPage(pageType, pageId)
+        {
+            if(pageType === 'mainPage') {
+                loadMainPage();
+            }
+
+            if(pageType === 'textPage') {
+                loadTextPage(pageId);
+            }
+
+            if(pageType === 'imagePage') {
+                loadImagePage(pageId);
+            }
+
+            if(pageType === 'radioPage') {
+                loadRadioPage(pageId);
+            }
+
+            if(pageType === 'tablePage') {
+                loadTablePage(pageId);
+            }
+        }
+
+        function bindAjaxFormTablePage(formId, submitElement)
+        {
+            /** element binding */
+            var form = $("#" + formId);
+            var targetUrl = form.attr('action');
+            var submit = $("#" + submitElement);
+
+            /** detaching everything from the submit button */
+            submit.unbind();
+
+            /** onChange Event */
+            $("#tablePage_title").change(function(e){formIsChanged(e)});
+
+            submit.on('click', function(e) {
+                e.preventDefault();
+
+                /** hooking into the submit button */
+                submit.attr('disabled', true);
+
+                /** saving from tinymce */
+                $('#tablePage_text').html( tinyMCE.get('tablePage_text').getContent() );
+
+                /** sending the form */
+                $.ajax({
+                    type: "POST",
+                    url: targetUrl,
+                    data: form.serialize(),
+                    success: function(data) {
+                        /** re enabling the submit form */
+                        submit.attr('disabled', false);
+
+                        /** checking the response */
+                        if(data.status === 'success') {
+                            sendSuccess(data.message);
+                            /** reloading everything */
+                            loadTablePage(data.id);
+                            loadElementList();
+                            formIsSaved();
+                        } else {
+                            sendError(data.message);
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        submit.attr('disabled', false);
+                        sendError(textStatus + " Error! " + errorThrown);
+                    }
+                });
+            });
+        }
+
+        function bindAjaxFormRadioPage(formId, submitElement)
+        {
+            /** element binding */
+            var form = $("#" + formId);
+            var targetUrl = form.attr('action');
+            var submit = $("#" + submitElement);
+
+            /** detaching everything from the submit button */
+            submit.unbind();
+
+            /** onchange events */
+            $("#radioPage_title").change(function(e){formIsChanged(e)});
+
+            submit.on('click', function(e) {
+                e.preventDefault();
+
+                /** hooking into the submit button */
+                submit.attr('disabled', true);
+
+                /** sending the form */
+                $.ajax({
+                    type: "POST",
+                    url: targetUrl,
+                    data: form.serialize(),
+                    success: function(data) {
+                        /** re enabling the submit form */
+                        submit.attr('disabled', false);
+
+                        /** checking the response */
+                        if(data.status === 'success') {
+                            sendSuccess(data.message);
+                            /** reloading everything */
+                            loadRadioPage(data.id);
+                            loadElementList();
+                            formIsSaved();
+                        } else {
+                            sendError(data.message);
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        submit.attr('disabled', false);
+                        sendError(textStatus + " Error! " + errorThrown);
+                    }
+                });
+            });
+        }
+
+        function bindAjaxFormImagePage(formId, submitElement)
+        {
+            /** element binding */
+            var form = $("#" + formId);
+            var targetUrl = form.attr('action');
+            var submit = $("#" + submitElement);
+
+            /** detaching everything from the submit button */
+            submit.unbind();
+
+            /** onchange event */
+            $("#imagePage_title").change(function(e){formIsChanged(e)});
+            $("#imagePage_file").change(function(e){formIsChanged(e)});
+
+            submit.on('click', function(e) {
+                e.preventDefault();
+
+                /** hooking into the submit button */
+                submit.attr('disabled', true);
+
+                /** sending the form */
+                $.ajax({
+                    type: "POST",
+                    url: targetUrl,
+                    data: new FormData(form[0]),
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    success: function(data) {
+                        /** re enabling the submit form */
+                        submit.attr('disabled', false);
+
+                        /** checking the response */
+                        if(data.status === 'success') {
+                            sendSuccess(data.message);
+                            /** reloading everything */
+                            loadImagePage(data.id);
+                            loadElementList();
+                            formIsSaved();
+                        } else {
+                            sendError(data.message);
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        submit.attr('disabled', false);
+                        sendError(textStatus + " Error! " + errorThrown);
+                    }
+                });
+            });
+        }
+
+        function bindAjaxFormTextPage(formId, submitElement)
+        {
+            /** element binding */
+            var form = $("#" + formId);
+            var targetUrl = form.attr('action');
+            var submit = $("#" + submitElement);
+
+            /** detaching everything from the submit button */
+            submit.unbind();
+
+            /** onchange event */
+            $("#textPage_title").change(function(e){formIsChanged(e)});
+
+            submit.on('click', function(e) {
+                e.preventDefault();
+
+                /** hooking into the submit button */
+                submit.attr('disabled', true);
+
+                $('#textPage_text').html( tinyMCE.get('textPage_text').getContent() );
+
+                /** sending the form */
+                $.ajax({
+                    type: "POST",
+                    url: targetUrl,
+                    data: form.serialize(),
+                    success: function(data) {
+                        /** re enabling the submit form */
+                        submit.attr('disabled', false);
+
+                        /** checking the response */
+                        if(data.status === 'success') {
+                            sendSuccess(data.message);
+                            /** reloading everything */
+                            loadTextPage(data.id);
+                            loadElementList();
+                            formIsSaved();
+                        } else {
+                            sendError(data.message);
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        submit.attr('disabled', false);
+                        sendError(textStatus + " Error! " + errorThrown);
+                    }
+                });
+            });
+        }
+
+        function bindAjaxFormMainPage(formId, submitElement)
+        {
+            /** element binding */
+            var form = $("#" + formId);
+            var targetUrl = form.attr('action');
+            var submit = $("#" + submitElement);
+
+            /** checking for changes */
+            $("#mainPage_image").change(function(e){formIsChanged(e)});
+            $("#product_name").change(function(e){formIsChanged(e)});
+            $("#mainPage_applications").change(function(e){formIsChanged(e)});
+            $("#product_description").change(function(e){formIsChanged(e)});
+
+            /** detaching everything from the submit button */
+            submit.unbind();
+
+            submit.on('click', function(e) {
+                e.preventDefault();
+
+                /** hooking into the submit button */
+                submit.attr('disabled', true);
+
+                $('#product_description').html( tinyMCE.get('product_description').getContent() );
+
+                var formToSendSerialized = new FormData(form[0]);
+
+                /** sending the form */
+                $.ajax({
+                    type: "POST",
+                    url: targetUrl,
+                    data: formToSendSerialized,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    success: function(data) {
+                        /** re enabling the submit form */
+                        submit.attr('disabled', false);
+
+                        /** checking the response */
+                        if(data.status === 'success') {
+                            sendSuccess(data.message);
+                            if(productId === 0) {
+                                if('id' in data && data.id > 0) {
+                                    productId = data.id;
+                                    loadElementList();
+                                    loadMainPage();
+                                } else {
+                                    sendError('{% trans %}Error while creating the product, please go back and check the existing products{% endtrans %}')
+                                }
+                            } else {
+                                loadElementList();
+                                loadMainPage();
+                            }
+                            formIsSaved();
+                        } else {
+                            sendError(data.message);
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown){
+                        submit.attr('disabled', false);
+                        sendError(textStatus + " Error! " + errorThrown);
+                    }
+                });
+            });
+        }
+
+        function bindListElements()
+        {
+            $(".goToPageList").each(function(index) {
+                $(this).on('click', function(e){
+                    e.preventDefault();
+                    var thisDataType = $(this).data("type");
+                    var thisDataId = $(this).data("pageid");
+                    if(unsavedChanges === 1) {
+                        modalConfirm(function(confirm){
+                            if(confirm) {
+                                loadEditPage(thisDataType, thisDataId);
+                            }
+                        });
+                    } else {
+                        loadEditPage(thisDataType, thisDataId);
+                    }
+
+                });
+            });
+
+            $(".deletePageFromList").each(function(index) {
+                $(this).on('click', function(e){
+                    e.preventDefault();
+                    deletePageCall($(this).data("type"), $(this).data("pageid"));
+                });
+            });
+        }
+
+        function deletePageCall(pageType, pageId)
+        {
+            if(confirm('{% trans %}Confirm page deletion{% endtrans %}')) {
+                if(pageType === 'textPage' || pageType === 'imagePage' || pageType === 'radioPage' || pageType === 'tablePage') {
+                    /** element binding */
+                    var targetUrl = '{{ path('composer_remove_page') }}/' + pageType + '/' + pageId;
+
+                    $.ajax({
+                        type: "GET",
+                        url: targetUrl,
+                        success: function(data) {
+                            /** checking the response */
+                            if(data.status === 'success') {
+                                sendSuccess(data.message);
+                                /** reloading everything */
+                                location.reload(true);
+                            } else {
+                                sendError(data.message);
+                            }
+                        },
+                        error: function(xhr, textStatus, errorThrown){
+                            sendError(textStatus + " Error! " + errorThrown);
+                        }
+                    });
+                }
+            }
+        }
+
+        function formIsChanged(e)
+        {
+            unsavedChanges = 1;
+            $('#savePageButton').prop('disabled', false);
+        }
+
+        function formIsSaved()
+        {
+            unsavedChanges = 0;
+            $('#savePageButton').prop('disabled', true);
+        }
+
+        function ptToName(pt)
+        {
+            var newName = "x";
+
+            if(pt === 'radioPage') {
+                newName = "list";
+            }
+
+            if(pt === 'textPage') {
+                newName = 'text';
+            }
+
+            if(pt === 'tablePage') {
+                newName = 'table';
+            }
+
+            if(pt === 'mainPage') {
+                newName = 'main';
+            }
+
+            if(pt === 'imagePage') {
+                newName = 'image'
+            }
+
+            return newName;
+        }
+
+        /**
+         * Template
+         */
+        function linkListTemplate(pageName, pageType, pageId, pageOrder)
+        {
+            var template = "<li style=\"padding-top: 5px;" +
+                "    padding-bottom: 5px;" +
+                "    border-bottom: 1px solid #EBEBEB;display:block;\"><div class=\"row\"><div class=\"col-xs-10 text-left\">" +
+                "<a class=\"goToPageList\" href=\"#\" id=\"linkList-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">[" + ptToName(pageType) + "] " + pageName + "</a>" +
+                "</div><div class=\"col-xs-2 text-right\"><a class=\"btn deletePageFromList\" style=\"background-color:#003D50;align-self:right;margin:-1px;\" href=\"#\" id=\"linkListDelete-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">" +
+                "<i class=\"fas fa-trash-alt fa-sm\" style=\"color:#FFFFFF;\"></i></a></div></div>" +
+                "</li>";
+
+            return $(template);
+        }
+
+        function radioAddElementTemplate(nextElement)
+        {
+            var template = "<div id=\"radioContainer-" + nextElement + "\" class=\"form-inline\">\n" +
+                "            <input type=\"text\" id=\"radioPage_property-" + nextElement + "\" class=\"form-control\" name=\"property[" + nextElement + "]\">\n" +
+                "            <input type=\"text\" id=\"radioPage_value-" + nextElement + "\" class=\"form-control\" name=\"value[" + nextElement + "]\">\n" +
+                "<a class=\"btn\" style=\"background-color:#003D50;\" href=\"#\" class=\"radioElementRemover\" id=\"removeRow-" + nextElement + "\" data-row=\"" + nextElement + "\"><i class=\"far fa-times\" style=\"color:#FFFFFF\"></i></a>" +
+                "        </div>";
+
+            return $(template);
+        }
+    </script>
+
+    <script type="text/javascript" src="{{ asset('assets/v2/js/gvFiltri/composer.js') }}"></script>
+
+    <!-- Dual Listbox -->
+    <script src="{{ asset('assets/v2/js/plugins/dualListbox/jquery.bootstrap-duallistbox.js') }}"></script>
+
+    <!-- DROPZONE -->
+    <script src="{{ asset('assets/v2/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
+{% endblock %}

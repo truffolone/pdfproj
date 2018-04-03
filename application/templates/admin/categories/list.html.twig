@@ -1,0 +1,108 @@
+{% extends 'layouts/adminv2.html.twig' %}
+
+{% block title %}{% trans %}Categories List{% endtrans %} {{ parent() }}{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link href="{{ asset('assets/v2/css/tooltipster.bundle.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/v2/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block pageTop %}
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>{% trans %}Categories List{% endtrans %}</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a>
+                </li>
+                <li class="active">
+                    {% trans %}Categories{% endtrans %}
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>{% trans %}Categories List{% endtrans %} <small>{% trans %}Categories Found{% endtrans %}: {{ pagination.getTotalItemCount }}</small></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="content col-md-12 text-right">
+                    <a href="{{ path('admin_categories_create') }}" class="btn btn-primary">{% trans %}Create New Category{% endtrans %}</a>
+                </div>
+
+                <table class="table table-striped">
+                    <tr>
+                        {# sorting of properties based on query components #}
+                        <th scope="col"{% if pagination.isSorted('c.id') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Icon'|trans({},'messages'), 'c.id') }}</th>
+                        <th scope="col"{% if pagination.isSorted('c.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Name'|trans({},'messages'), 'c.name') }}</th>
+                        <th scope="col"{% if pagination.isSorted('c.description') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Description'|trans({},'messages'), 'c.description') }}</th>
+                        <th>{% trans %}Actions{% endtrans %}</th>
+                    </tr>
+
+                    {# table body #}
+                    {% for category in pagination %}
+                        <tr {% if loop.index is odd %}class="color"{% endif %}>
+                            <td><img src="{{ asset(upload_images_directory ~ '/' ~ category.icon) }}" class="little-icon"></td>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.description|striptags()|truncate(60) }}</td>
+                            <td>
+                                <a class="btn tt" title="{% trans %}Edit a Category{% endtrans %}" style="background-color:#003D50" href="{{ path('admin_categories_edit', {'id': category.id}) }}">
+                                    <i class="fas fa-pencil-alt" style="color:#FFFFFF;"></i>
+                                </a>
+                                <a class="btn" style="background-color:#003D50" href="{{ path('admin_categories_delete', {'id': category.id}) }}" data-toggle="confirmation"
+                                   data-btn-ok-label="{% trans %}Continue{% endtrans %}" data-btn-ok-icon="far fa-check"
+                                   data-btn-ok-class="btn-success"
+                                   data-btn-cancel-label="{% trans %}Cancel{% endtrans %}" data-btn-cancel-icon="far fa-hand-paper"
+                                   data-btn-cancel-class="btn-danger"
+                                   data-singleton="true" data-popout="true"
+                                   data-title="{% trans %}You are going to delete a Category{% endtrans %}" data-content="{% trans %}Are you sure you want to continue{% endtrans %}?">
+                                    <i class="fas fa-trash-alt" style="color:#FFFFFF;"></i>
+                                </a>
+                                {% if loop.index > 1 %}
+                                    <a class="btn" style="background-color:#003D50" href="{{ path('admin_categories_move', {'id': category.id, 'direction': 'up'}) }}">
+                                        <i class="far fa-arrow-square-up" style="color:#FFFFFF;"></i>
+                                    </a>
+                                {% endif %}
+                                {% if loop.index < pagination.getTotalItemCount %}
+                                    <a class="btn" style="background-color:#003D50" href="{{ path('admin_categories_move', {'id': category.id, 'direction': 'down'}) }}">
+                                        <i class="far fa-arrow-square-down" style="color:#FFFFFF;"></i>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/v2/js/plugins/confirmation/confirmation.min.js') }}"></script>
+    <script src="{{ asset('assets/v2/js/tooltipster.bundle.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle=confirmation]').confirmation({
+                rootSelector: '[data-toggle=confirmation]'
+            });
+
+            $('.tt').tooltipster({theme: 'light'});
+        });
+    </script>
+{% endblock %}

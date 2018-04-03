@@ -1,0 +1,16 @@
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     '%kernel.project_dir%/bin/wkhtmltopdf'
+        options:
+            page_size: A4
+            margin_bottom: 0
+            margin_top: 0
+            margin_left: 0
+            margin_right: 0
+            footer_html: 'http://gvfiltri.echocreative.it/assets/footer.html'
+            footer_spacing: 200
+    image:
+        enabled:    true
+        binary:     '%kernel.project_dir%/bin/wkhtmltoimage'
+        options:    []

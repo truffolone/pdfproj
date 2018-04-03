@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{"Login"|trans|upper}} | {% trans %}GV Filtri{% endtrans %}</title>
+
+    <link href="{{ asset('assets/v2/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/v2/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('assets/v2/css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/v2/css/style.css') }}" rel="stylesheet">
+
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/gvfiltri_favicon.png') }}">
+
+</head>
+
+<body class="gray-bg" style="background-color: #003D50 !important;">
+
+<div class="middle-box text-center loginscreen animated fadeInDown" style="background-color: #003D50 !important;">
+    <div>
+        <img src="{{ asset('images/logo_gvfiltri.png') }}" style="max-width:100%;">
+        <p>{% trans %}Make Login{% endtrans %}</p>
+        {% if error %}
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>{% trans %}Error{% endtrans %}!</strong> {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+        <form action="{{ path('login') }}" method="post" class="m-t" role="form">
+            <div class="form-group">
+                <input type="text" placeholder="{% trans %}Username{% endtrans %}" id="username" class="form-control" name="_username" value="{{ lastUsername }}" required />
+            </div>
+
+            <div class="form-group">
+                <input type="password" placeholder="{% trans %}Password{% endtrans %}" class="form-control" id="password" name="_password" required />
+            </div>
+
+            <button class="btn btn-primary block full-width m-b" type="submit">{% trans %}Login{% endtrans %}</button>
+        </form>
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="{{ asset('assets/v2/js/jquery-3.1.1.min.js') }}"></script>
+<script src="{{ asset('assets/v2/js/bootstrap.min.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+{% extends 'layouts/adminv2.html.twig' %}
+
+{% block title %}{% trans %}Admin Area{% endtrans %} {{ parent() }}{% endblock %}
+
+{% form_theme form 'layouts/forms/default.html.twig' %}
+
+{% block body %}
+    <h1>{% trans %}Edit User{% endtrans %}</h1>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.username) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.plainPassword) }}
+    {{ form_row(form.role) }}
+
+    {{ form_end(form) }}
+
+{% endblock %}

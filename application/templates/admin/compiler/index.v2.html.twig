@@ -1,0 +1,188 @@
+{% extends 'layouts/adminv2.html.twig' %}
+
+{% block title %}{% trans %}PDF Compiler{% endtrans %} {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('assets/css/pdf-composer.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <h1>{% trans %}PDF Compiler{% endtrans %}</h1>
+    <div class="container-fluid">
+        <div id="wrapper">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                            {% trans %}Selected Pages{% endtrans %}
+                    </li>
+                    <hr>
+                    <li>
+                        <a href="#" class="sidebar-page-link" data-id="123" draggable="true">[0] Main Page 1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-page-link" data-id="123" draggable="true">[1] Radio Page 1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-page-link" data-id="123" draggable="true">[2] My Table</a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-page-link" data-id="123" draggable="true">[3] Sample Image</a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-page-link" data-id="123" draggable="true">[4] Text for You Page</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- page -->
+            <div id="page-content-wrapper" class="row col-md-12">
+                <div class="row col-md-12">
+                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">
+                        {% trans %}View Active Pages{% endtrans %}
+                    </a>
+                    <a href="#base-data-toggle" class="btn btn-secondary" id="base-data-toggle">
+                        {% trans %}Edit Basic Data{% endtrans %}
+                    </a>
+                </div>
+                <div class="row col-md-12" id="addPageDiv">
+                    <!-- add page buttons -->
+                </div>
+
+                <div id="mainDataDiv" class="col-md-12 d-none">
+                    <div class="form-group">
+                        <label for="product">{% trans %}Referred Product{% endtrans %}</label>
+                        <select class="form-control" id="product" name="product">
+                            {% for product in products %}
+                                <option value="{{ product.id }}">{{ product.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mainDataTitle">{% trans %}Document Title{% endtrans %}</label>
+                        <input type="text" class="form-control" name="title" id="mainDataTitle">
+                    </div>
+                    <div class="form-group">
+                        <label for="mainDataNote">{% trans %}Note{% endtrans %}</label>
+                        <textarea name="note" id="mainDataNote"></textarea>
+                    </div>
+                </div>
+                <div id="mainContainer" class="row container-fluid">
+                    <!-- containter for page content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal -->
+    <div class="modal fade" id="addTabModal" tabindex="-1" role="dialog" aria-labelledby="addTabModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTabModalLabel">{% trans %}Add a Page{% endtrans %}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="pageTitle" class="col-form-label">{% trans %}Page Type{% endtrans %}:</label>
+                            <input type="text" name="pageTitle" id="pageTitle" class="form-control" placeholder="{% trans %}Page Title{% endtrans %}">
+                        </div>
+                        <div class="form-group">
+                            <label for="pageType" class="col-form-label">{% trans %}Page Type{% endtrans %}:</label>
+                            <select class="form-control" name="pageType" id="pageType">
+                                <option value="text">{% trans %}Simple Text{% endtrans %}</option>
+                                <option value="list">{% trans %}List of Items{% endtrans %}</option>
+                                <option value="table">{% trans %}Simple Table{% endtrans %}</option>
+                                <option value="image">{% trans %}Image{% endtrans %}</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary" id="createPageButton">{% trans %}Create Page{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <!-- inject translations and vars -->
+    <script>
+        var t = {
+            "pageCreationError":"{% trans %}A problem occurred while creating the page{% endtrans %}",
+            "addElementToTheList":"{% trans %}Add Element to the List{% endtrans %}",
+            "sectionTitle":"{% trans %}Section Title{% endtrans %}",
+            "elementName":"{% trans %}Element Name{% endtrans %}",
+            "elementValue":"{% trans %}Element Value{% endtrans %}",
+            "pageTitle":"{% trans %}Page Title{% endtrans %}",
+            "textContent":"{% trans %}Text Content{% endtrans %}",
+            "loadImage":"{% trans %}Load an Image{% endtrans %}",
+            "defaultAddAPage":"{% trans %}Add a Page{% endtrans %}",
+            "addAPageSave":"{% trans %}Save Changes and add a new Page{% endtrans %}",
+            "addAPageDiscard":"{% trans %}Discard Changes and add a new Page{% endtrans %}",
+            "startWithMainPage":"{% trans %}Start with a Main Page{% endtrans %}",
+            "noPageToWorkOn":"{% trans %}You have not selected a page to work on{% endtrans %}",
+            "newPageTemplateSelect":"{% trans %}Select an Empty Template to Work on{% endtrans %}",
+            "textPageType":"{% trans %}Simple Text{% endtrans %}",
+            "imagePageType":"{% trans %}Image{% endtrans %}",
+            "listPageType":"{% trans %}List of Items{% endtrans %}",
+            "loadPageTemplateSelect":"{% trans %}Load Template from an Existing Page{% endtrans %}",
+            "addEmptyPageBtn":"{% trans %}Add an Empty Page{% endtrans %}",
+            "addCompiledPageBtn":"{% trans %}Add a Page From an Existing One{% endtrans %}",
+            "pageCreationErrorAPI":"{% trans %}There has been an error during page creation, check the server log{% endtrans %}"
+        }
+        var pageTypeList = ["text", "list", "table", "image"];
+        var pages = {};
+        var createPageButton = $("#createPageButton");
+        var modalElement = $("#addTabModal");
+        var tabs = $("#myTabs");
+        var lastTabId = 0;
+        var headerTabId = "headerTabId-";
+        var pageContentId = "tabPage-";
+        var tabParentId = "mainTabHeader-";
+        var pageContainer = $("#tabPagesContainer");
+        var deleteTab = "deleteTab-";
+        var listOfList = [];
+        var tinyMCEPluginList = 'undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent';
+    </script>
+
+    <!-- custom js for the page -->
+    <script src="{{ asset('assets/js/tinymce/tinymce.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/tinymce/jquery.tinymce.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/compiler/compiler.v2.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/compiler/templates.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/compiler/helpers.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/jquery.selectlistactions.min.js') }}" type="text/javascript"></script>
+    <script>
+        {% for category in categories %}
+            $('#btnRight-{{ category.id }}').click(function (e) {
+                $('#source-{{ category.id }}').moveToListAndDelete('#source-{{ category.id }}', '#destination-{{ category.id }}');
+                e.preventDefault();
+            });
+
+            $('#btnAllRight-{{ category.id }}').click(function (e) {
+                $('#source-{{ category.id }}').moveAllToListAndDelete('#source-{{ category.id }}', '#destination-{{ category.id }}');
+                e.preventDefault();
+            });
+
+            $('#btnLeft-{{ category.id }}').click(function (e) {
+                $('#source-{{ category.id }}').moveToListAndDelete('#destination-{{ category.id }}', '#source-{{ category.id }}');
+                e.preventDefault();
+            });
+
+            $('#btnAllLeft-{{ category.id }}').click(function (e) {
+                $('#source-{{ category.id }}').moveAllToListAndDelete('#destination-{{ category.id }}', '#source-{{ category.id }}');
+                e.preventDefault();
+            });
+        {% endfor %}
+    </script>
+{% endblock %}

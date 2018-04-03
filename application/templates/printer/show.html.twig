@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <base href="http://www.mypdf.tfl">
+
+        <title>PDF</title>
+
+        <link href="{{ absolute_url(asset('assets/v2/css/bootstrap.min.css')) }}" rel="stylesheet">
+
+        <link href="{{ absolute_url(asset('assets/v2/css/animate.css')) }}" rel="stylesheet">
+
+        <link href="{{ absolute_url(asset('assets/v2/css/pdf.css')) }}" rel="stylesheet">
+    </head>
+    <body class="pace-done white-bg">
+        <nav class="navbar pdfHeader" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <img src="{{ absolute_url(asset('images/logo_gvfiltri.png')) }}" class="topLogoImg">
+            </div>
+        </nav>
+
+        {% for page in pages %}
+            {% if page.type == 'mainPage' %}
+                {% include 'printer/partials/mainPage.html.twig' %}
+            {% elseif page.type == 'textPage' %}
+                {% include 'printer/partials/textPage.html.twig' %}
+            {% elseif page.type == 'tablePage' %}
+                {% include 'printer/partials/tablePage.html.twig' %}
+            {% elseif page.type == 'imagePage' %}
+                {% include 'printer/partials/imagePage.html.twig' %}
+            {% elseif page.type == 'radioPage' %}
+                {% include 'printer/partials/radioPage.html.twig' %}
+            {% endif %}
+        {% endfor %}
+
+        <div class="container-fluid pdfFooter text-right">{% trans %}Revision{% endtrans %}: {{ product.revision }}</div>
+    </body>
+</html>

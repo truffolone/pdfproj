@@ -1,0 +1,20 @@
+<div class="keep-together {% if loop.index is odd %}pdfContainerWhite{% else %}pdfContainerGrey{% endif %}"{% if loop.index == pages|length %} style="height:100%;"{% endif %}>
+    <div class="textPage">
+        {% if page.page.title and page.page.title != '' %}
+            <h1 class="pdfMainPageTitleA blackSectionTitle">{{ page.page.title }}</h1>
+            <div class="righettaBluA">&nbsp;&nbsp;</div>
+        {% endif %}
+        <div class="listOfApplications">
+            <table class="table-borderedRadio">
+                <tbody>
+                    {% for anv in page.page.attributeNameValues %}
+                        <tr>
+                            <td class="leftTablePdf">{{ anv.attributeName.name }}</td>
+                            <td class="rightTablePdf">{{ anv.attributeValue.value }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+   </div>
+</div>

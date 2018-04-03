@@ -1,0 +1,10 @@
+<div class="container-fluid {% if loop.index is odd %}pdfContainerWhite{% else %}pdfContainerGrey{% endif %}">
+    <div class="col-xs-12">
+        <h1 class="pdfMainPageTitle blackSectionTitle">{{ page.page.title }}</h1>
+        <hr class="afterTitle">
+        <br><br><br>
+        <div class="col-md-12 text-center">
+            <img src="{{ absolute_url(asset(upload_images_pdf_directory ~ "/" ~ page.page.image)) }}">
+        </div>
+   </div>
+</div>
