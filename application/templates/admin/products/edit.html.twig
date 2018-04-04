@@ -781,8 +781,10 @@
                             if(productId === 0) {
                                 if('id' in data && data.id > 0) {
                                     productId = data.id;
-                                    loadElementList();
-                                    loadMainPage();
+                                    setTimeout(function{
+                                        loadElementList();
+                                        loadMainPage();
+                                    }, 1000);
                                 } else {
                                     sendError('{% trans %}Error while creating the product, please go back and check the existing products{% endtrans %}')
                                 }
