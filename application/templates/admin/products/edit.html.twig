@@ -7,6 +7,26 @@
 
     <link href="{{ asset('assets/v2/css/plugins/dualListbox/bootstrap-duallistbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/v2/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+
+    <style>
+        body.dragging, body.dragging * {
+            cursor: move !important;
+        }
+
+        .dragged {
+            position: absolute;
+            opacity: 0.5;
+            z-index: 2000;
+        }
+
+        ul#elList li {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgb(235, 235, 235);
+            display: block;
+            list-style-type: none;
+        }
+    </style>
 {% endblock %}
 
 {% block pageTop %}
@@ -140,6 +160,7 @@
 
     <script src="{{ asset('assets/v2/js/plugins/confirmation/confirmation.min.js') }}"></script>
     <script src="{{ asset('assets/v2/js/plugins/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/v2/js/sortable.min.js') }}"></script>
 
     <script>
         var productId = {{ product_id }};
@@ -347,7 +368,7 @@
 
             $(".radioElementRemover").each(function(){
                 var elementToBind = $(this).data("row");
-console.log(elementToBind);
+
                 bindDeleteRadioRow(elementToBind);
                 formIsChanged('a');
             });
@@ -807,7 +828,8 @@ console.log(elementToBind);
 
         function bindListElements()
         {
-            $(".goToPageList").each(function(index) {
+            var gtpl = $(".goToPageList");
+            gtpl.each(function(index) {
                 $(this).on('click', function(e){
                     e.preventDefault();
                     var thisDataType = $(this).data("type");
@@ -824,6 +846,20 @@ console.log(elementToBind);
 
                 });
             });
+
+            setTimeout(function(){
+                var el = document.getElementById('elList');
+                var sortable = Sortable.create(el, {
+                    handle: '.fa-bars',
+                    animation: 150,
+                    draggable: '.draggable-element',
+                    onSort: function (evt) {
+                        console.log(evt.item);
+                        console.log("old index = " + evt.oldIndex);
+                        console.log("new index = " + evt.newIndex);
+                    }
+                });
+            }, 2000);
 
             $(".deletePageFromList").each(function(index) {
                 $(this).on('click', function(e){
@@ -905,13 +941,23 @@ console.log(elementToBind);
          */
         function linkListTemplate(pageName, pageType, pageId, pageOrder)
         {
-            var template = "<li style=\"padding-top: 5px;" +
-                "    padding-bottom: 5px;" +
-                "    border-bottom: 1px solid #EBEBEB;display:block;\"><div class=\"row\"><div class=\"col-xs-10 text-left\">" +
-                "<a class=\"goToPageList\" href=\"#\" id=\"linkList-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">[" + ptToName(pageType) + "] " + pageName + "</a>" +
-                "</div><div class=\"col-xs-2 text-right\"><a class=\"btn deletePageFromList\" style=\"background-color:#003D50;align-self:right;margin:-1px;\" href=\"#\" id=\"linkListDelete-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">" +
-                "<i class=\"fas fa-trash-alt fa-sm\" style=\"color:#FFFFFF;\"></i></a></div></div>" +
-                "</li>";
+            if(pageType === 'mainPage') {
+                var template = "<li style=\"padding-top: 5px;" +
+                    "    padding-bottom: 5px;" +
+                    "    border-bottom: 1px solid #EBEBEB;display:block;\" class=\"ignore-elements\"><div class=\"row\"><div class=\"col-xs-10 text-left\">" +
+                    "<a class=\"goToPageList\" href=\"#\" id=\"linkList-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">[" + ptToName(pageType) + "] " + pageName + "</a>" +
+                    "</div><div class=\"col-xs-2 text-right\"><a class=\"btn deletePageFromList\" style=\"background-color:#003D50;align-self:right;margin:-1px;\" href=\"#\" id=\"linkListDelete-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">" +
+                    "<i class=\"fas fa-trash-alt fa-sm\" style=\"color:#FFFFFF;\"></i></a></div></div>" +
+                    "</li>";
+            } else {
+                var template = "<li style=\"padding-top: 5px;" +
+                    "    padding-bottom: 5px;" +
+                    "    border-bottom: 1px solid #EBEBEB;display:block;\" class=\"draggable-element\"><div class=\"row\"><div class=\"col-xs-10 text-left\">" +
+                    "<i class=\"fal fa-bars\" style=\"margin-right:3px;cursor:grabbing;\"></i> <a class=\"goToPageList\" href=\"#\" id=\"linkList-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">[" + ptToName(pageType) + "] " + pageName + "</a>" +
+                    "</div><div class=\"col-xs-2 text-right\"><a class=\"btn deletePageFromList\" style=\"background-color:#003D50;align-self:right;margin:-1px;\" href=\"#\" id=\"linkListDelete-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">" +
+                    "<i class=\"fas fa-trash-alt fa-sm\" style=\"color:#FFFFFF;\"></i></a></div></div>" +
+                    "</li>";
+            }
 
             return $(template);
         }
