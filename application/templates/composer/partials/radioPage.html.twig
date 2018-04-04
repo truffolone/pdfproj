@@ -12,16 +12,16 @@
         <div class="form-group" id="radioContainer">
         {% if radioPage.attributeNameValues|length == 0 %}
             <div id="radioContainer-0" class="form-inline">
-                <input type="text" id="radioPage_property-0" class="form-control" name="property[0]">
-                <input type="text" id="radioPage_value-0" class="form-control" name="value[0]">
-                <a href="#" id="removeRow-0" data-row="0"><i class="far fa-times fa-3x"></i></a>
+                <input type="text" id="radioPage_property-0" class="form-control col-xs-5" name="property[0]">
+                <input type="text" id="radioPage_value-0" class="form-control col-xs-5" name="value[0]">
+                <a class="btn radioElementRemover" style="background-color:#003D50;" href="#" id="removeRow-0" data-row="0"><i class="far fa-times" style="color:#FFFFFF"></i></a>
             </div>
         {% else %}
             {% for anv in radioPage.attributeNameValues %}
                 <div id="radioContainer-{{ loop.index0 }}" class="form-inline">
-                    <input type="text" id="radioPage_property-{{ loop.index0 }}" class="form-control" name="property[{{ loop.index0 }}]" value="{{ anv.attributeName.name }}">
-                    <input type="text" id="radioPage_value-{{ loop.index0 }}" class="form-control" name="value[{{ loop.index0 }}]" value="{{ anv.attributeValue.value }}">
-                    <a class="btn" style="background-color:#003D50;" href="#" class="radioElementRemover" id="removeRow-{{ loop.index0 }}" data-row="{{ loop.index0 }}"><i class="far fa-times" style="color:#FFFFFF"></i></a>
+                    <input type="text" id="radioPage_property-{{ loop.index0 }}" class="form-control col-xs-5" name="property[{{ loop.index0 }}]" value="{{ anv.attributeName.name == '{EMPTY}' ? ' ' : anv.attributeName.name }}">
+                    <input type="text" id="radioPage_value-{{ loop.index0 }}" class="form-control col-xs-5" name="value[{{ loop.index0 }}]" value="{{ anv.attributeValue.value }}">
+                    <a class="btn radioElementRemover" style="background-color:#003D50;" href="#" id="removeRow-{{ loop.index0 }}" data-row="{{ loop.index0 }}"><i class="far fa-times" style="color:#FFFFFF"></i></a>
                 </div>
             {% endfor %}
         {% endif %}

@@ -9,7 +9,7 @@
                 <tbody>
                     {% for anv in page.page.attributeNameValues %}
                         <tr>
-                            <td class="leftTablePdf">{{ anv.attributeName.name }}</td>
+                            <td class="leftTablePdf">{{ anv.attributeName.name == '{EMPTY}' ? ' ' : anv.attributeName.name }}</td>
                             <td class="rightTablePdf">{{ anv.attributeValue.value }}</td>
                         </tr>
                     {% endfor %}

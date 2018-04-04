@@ -182,7 +182,9 @@ class ShowProductController extends Controller
         }
 
         /** ordering categories */
-        usort($catArray, 'orderCategories');
+        usort($catArray, function ($a, $b) {
+            return strcmp($a['order'], $b['order']);
+        });
 
         $file = 'product_' . $product->getId() . '_' .
                     $product->getRevision() . '_' .
@@ -280,11 +282,6 @@ class ShowProductController extends Controller
         $response->setContent(file_get_contents($filename));
 
         return $response;
-    }
-
-    public static function orderCategories($a, $b)
-    {
-        return strcmp($a['order'], $b['order']);
     }
 
     /**

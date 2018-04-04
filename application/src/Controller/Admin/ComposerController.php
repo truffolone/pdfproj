@@ -832,8 +832,8 @@ class ComposerController extends Controller
                 /** Property */
                 $propertyString = trim($value);
                 if ($propertyString === '') {
-                    //we ignore empty properties
-                    continue;
+                    //we setup a BBCode (I'm old) to be parsed during print
+                    $propertyString = '{EMPTY}';
                 }
 
                 $propertyFromDatabase = $propertiesRepository->retrieveFromNameFacade($propertyString);
