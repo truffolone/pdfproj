@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="DEV">
+    <serverData>
+      <paths name="DEV">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/var/www/html/gvfiltri" local="$PROJECT_DIR$/application" web="/gvfiltri" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/application/var/cache" />
+            <excludedPath local="true" path="$PROJECT_DIR$/application/config" />
+            <excludedPath local="true" path="$PROJECT_DIR$/application/var/log" />
+            <excludedPath local="true" path="$PROJECT_DIR$/application/tests" />
+            <excludedPath local="true" path="$PROJECT_DIR$/application/backup.sql" />
+            <excludedPath path="/var/www/html/gvfiltri/.dep" />
+            <excludedPath path="/var/www/html/gvfiltri/file.pdf" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>
