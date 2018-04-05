@@ -19,20 +19,4 @@ class RadioPageRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, RadioPage::class);
     }
-
-    /**
-     * @param int $radioPageId
-     * @return mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function getNextOrder(int $radioPageId) :?AttributeNameValue
-    {
-        $qb = $this->createQueryBuilder('d')
-            ->andWhere('d.product = :product_id')
-            ->setParameter('product_id', $radioPageId)
-            ->orderBy('d.order', 'DESC')
-            ->getQuery();
-
-        return $qb->setMaxResults(1)->getOneOrNullResult();
-    }
 }

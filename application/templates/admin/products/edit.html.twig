@@ -352,6 +352,7 @@
         {
             $("#addRow").on('click', function(e){
                 e.preventDefault();
+                unbindRadioPageSortable();
 
                 var nextElement = $(this).data("row") + 1;
                 var radioContainer = $("#radioContainer");
@@ -364,6 +365,9 @@
                 $(this).data('row', nextElement);
 
                 formIsChanged(e);
+                setTimeout(function () {
+                    bindRadioPageSortable();
+                }, 500)
             });
 
             $(".radioElementRemover").each(function(){
@@ -373,7 +377,32 @@
                 formIsChanged('a');
             });
 
+            unbindRadioPageSortable();
+
+            setTimeout(function () {
+                bindRadioPageSortable();
+            }, 1500);
+
             bindAjaxFormRadioPage('radioPageForm', 'savePageButton');
+        }
+
+        function unbindRadioPageSortable()
+        {
+            if (typeof listSortable !== 'undefined') {
+                listSortable.destroy();
+            }
+        }
+
+        function bindRadioPageSortable()
+        {
+            var elA = document.getElementById('radioContainer');
+            var listSortable = Sortable.create(elA, {
+                handle: '.dragButton',
+                draggable: '.divToDrag',
+                onSort: function(evt) {
+                    formIsChanged(evt);
+                }
+            });
         }
 
         function bindDeleteRadioRow(elementToBind)

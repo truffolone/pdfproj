@@ -828,6 +828,7 @@ class ComposerController extends Controller
         $radioPage->emptyAttributeNameValues();
 
         if (\count($properties) > 0) {
+            $eavOrder = 0;
             foreach ($properties as $key => $value) {
                 /** Property */
                 $propertyString = trim($value);
@@ -844,9 +845,11 @@ class ComposerController extends Controller
 
                 /** Association */
                 $eav = $eavRepository->fromNameValueFacade($propertyFromDatabase, $valueFromDatabase);
+                $eav->setOrder($eavOrder);
 
                 /** eav on the radioPage */
                 $radioPage->addAttributeNameValue($eav);
+                $eavOrder++;
             }
         }
 
@@ -1161,6 +1164,7 @@ class ComposerController extends Controller
      * @Route("/reorderPages", name="_page_reorder", methods="POST")
      * @param Request $request
      * @return JsonResponse
+     * @throws \LogicException
      */
     public function reorderPages(Request $request) :JsonResponse
     {
