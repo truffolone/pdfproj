@@ -739,6 +739,22 @@ class ComposerController extends Controller
             );
         }
 
+        $attributeNameValues = [];
+
+        if ($anvs = $radioPage->getAttributeNameValues()) {
+            foreach ($anvs as $anv) {
+                $attributeNameValues[] = [
+                    'value' => $anv->getAttributeValue()->getValue(),
+                    'name' => $anv->getAttributeName()->getName(),
+                    'order' => $anv->getOrder()
+                ];
+            }
+
+            usort($attributeNameValues, function ($a, $b) {
+                return strcmp($a['order'], $b['order']);
+            });
+        }
+
         /** loading the page content */
         $htmlData = $this
             ->render(
@@ -746,7 +762,8 @@ class ComposerController extends Controller
                 [
                     'radioPage' => $radioPage,
                     'radioPageId' => $id,
-                    'productId' => $productId
+                    'productId' => $productId,
+                    'anvs' => $attributeNameValues
                 ]
             )
             ->getContent();
@@ -768,9 +785,6 @@ class ComposerController extends Controller
      * @throws \Symfony\Component\Translation\Exception\InvalidArgumentException
      * @throws \Doctrine\ORM\ORMInvalidArgumentException
      * @throws \LogicException
-     * @throws NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      * @throws InvalidArgumentException
      */
     public function sendRadioPage(int $productId, $id, Request $request, ValidatorInterface $validator) :JsonResponse
@@ -832,7 +846,7 @@ class ComposerController extends Controller
             foreach ($properties as $key => $value) {
                 /** Property */
                 $propertyString = trim($value);
-                if ($propertyString === '') {
+                if ($propertyString === null || $propertyString === '') {
                     //we setup a BBCode (I'm old) to be parsed during print
                     $propertyString = '{EMPTY}';
                 }
