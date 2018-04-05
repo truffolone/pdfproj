@@ -52,4 +52,42 @@ class AttributeNameValueRepository extends ServiceEntityRepository
 
         return $eav;
     }
+
+    /**
+     * Automatically refresh page order
+     * @param int $productId
+     * @return void
+     */
+    public function refreshOrder(int $productId) :void
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->andWhere('d.product = :product_id')
+            ->setParameter('product_id', $productId)
+            ->orderBy('d.order', 'ASC')
+            ->getQuery();
+
+        $results = $qb->execute();
+
+        if (!$results) {
+            return;
+        }
+
+        $i = 1;
+        $entityManager = $this->getEntityManager();
+        foreach ($results as $document) {
+            if ($document->getPageType() === 'mainPage') {
+                $query = $entityManager->createQuery(
+                    'UPDATE App\Entity\Document d  SET d.order = :new_order WHERE d.id = :document_id'
+                )->setParameter('new_order', 0)->setParameter('document_id', $document->getId());
+            } else {
+                $query = $entityManager->createQuery(
+                    'UPDATE App\Entity\Document d  SET d.order = :new_order WHERE d.id = :document_id'
+                )->setParameter('new_order', $i)->setParameter('document_id', $document->getId());
+
+                $i++;
+            }
+
+            $query->execute();
+        }
+    }
 }

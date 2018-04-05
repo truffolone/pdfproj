@@ -67,6 +67,11 @@ class DocumentRepository extends ServiceEntityRepository
         return $qb->setMaxResults(1)->getOneOrNullResult();
     }
 
+    /**
+     * Automatically refresh page order
+     * @param int $productId
+     * @return void
+     */
     public function refreshOrder(int $productId) :void
     {
         $qb = $this->createQueryBuilder('d')

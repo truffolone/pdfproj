@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\AttributeNameValue;
 use App\Entity\RadioPage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -19,16 +20,19 @@ class RadioPageRepository extends ServiceEntityRepository
         parent::__construct($registry, RadioPage::class);
     }
 
-    /*
-    public function findBySomething($value)
+    /**
+     * @param int $radioPageId
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getNextOrder(int $radioPageId) :?AttributeNameValue
     {
-        return $this->createQueryBuilder('r')
-            ->where('r.something = :value')->setParameter('value', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('d')
+            ->andWhere('d.product = :product_id')
+            ->setParameter('product_id', $radioPageId)
+            ->orderBy('d.order', 'DESC')
+            ->getQuery();
+
+        return $qb->setMaxResults(1)->getOneOrNullResult();
     }
-    */
 }
