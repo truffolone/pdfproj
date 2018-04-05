@@ -968,7 +968,6 @@ class ComposerController extends Controller
      * @return JsonResponse
      * @throws InvalidArgumentException
      * @throws \LogicException
-     * @throws NonUniqueResultException
      * @throws FileException
      */
     public function sendImagePage(int $productId, $id, Request $request, ValidatorInterface $validator) :JsonResponse
@@ -1154,6 +1153,75 @@ class ComposerController extends Controller
             [
                 'status' => 'success',
                 'message' => $this->translator->trans('Page Removed')
+            ]
+        );
+    }
+
+    /**
+     * @Route("/reorderPages", name="_page_reorder", methods="POST")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function reorderPages(Request $request) :JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        /** checking the product */
+        $productRepository = $em->getRepository(Product::class);
+        if (!$product = $productRepository->find($request->request->get('id'))) {
+            return new JsonResponse(
+                [
+                    'status' => 'error',
+                    'message' => 'Product not Found'
+                ]
+            );
+        }
+
+        /** checking elements */
+        $newOrder = $request->request->get('order', []);
+        if (\count($newOrder) < 1) {
+            return new JsonResponse(
+                [
+                    'status' => 'error',
+                    'message' => 'Order not Valid'
+                ]
+            );
+        }
+
+        /** cycling through elements */
+        $documentRepository = $em->getRepository(Document::class);
+        $notFound = [];
+        $startingFrom = 1;
+        foreach ((array) $newOrder as $documentId) {
+            if ($documentToEdit = $documentRepository->find($documentId)) {
+                $documentToEdit->setOrder($startingFrom);
+                $em->persist($documentToEdit);
+                $startingFrom++;
+            } else {
+                $notFound[] = $documentId;
+            }
+        }
+
+        /** if everything was fine we save the changes */
+        if (\count($notFound) === 0) {
+            $em->flush();
+        } else {
+            return new JsonResponse(
+                [
+                    'status' => 'error',
+                    'message' => 'There are pages that have not been found'
+                ]
+            );
+        }
+
+        /** flushing the order */
+        $documentRepository->refreshOrder($product->getId());
+
+        /** returning success response */
+        return new JsonResponse(
+            [
+                'status' => 'success',
+                'message' => 'Page Order Successfully Changed'
             ]
         );
     }

@@ -33,6 +33,11 @@ class AttributeNameValue
     private $attributeValue;
 
     /**
+     * @ORM\Column(type="smallint", name="ordine", options={"default" : 0})
+     */
+    private $order;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
@@ -96,6 +101,22 @@ class AttributeNameValue
     public function setAttributeValue(AttributeValue $attributeValue): void
     {
         $this->attributeValue = $attributeValue;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param mixed $order
+     */
+    public function setOrder($order): void
+    {
+        $this->order = $order;
     }
 
     /**

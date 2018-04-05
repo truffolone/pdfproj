@@ -265,7 +265,7 @@
                     /** rendering list */
                     elList.empty();
                     $.each(data.documents, function(index,value){
-                        addElementToList(value.name, value.pageType, value.pageId);
+                        addElementToList(value.name, value.pageType, value.pageId, value.id);
                     });
                     bindListElements();
                     return true;
@@ -522,10 +522,10 @@
             }, 1000);
         }
 
-        function addElementToList(pageName, pageType, pageId)
+        function addElementToList(pageName, pageType, pageId, documentId)
         {
             /** adding link */
-            var elementToAdd = linkListTemplate(pageName, pageType, pageId, pageElementCount);
+            var elementToAdd = linkListTemplate(pageName, pageType, pageId, pageElementCount, documentId);
             if(pageType === 'mainPage') {
                 elList.prepend(elementToAdd);
             } else {
@@ -807,7 +807,7 @@
                                         loadMainPage();
                                     }, 1000);
                                 } else {
-                                    sendError('{% trans %}Error while creating the product, please go back and check the existing products{% endtrans %}')
+                                    sendError('{% trans %}Error while creating the product, please go back and check the existing products{% endtrans %}');
                                 }
                             } else {
                                 loadElementList();
@@ -847,6 +847,10 @@
                 });
             });
 
+            if (typeof sortable !== 'undefined') {
+                sortable.destroy();
+            }
+
             setTimeout(function(){
                 var el = document.getElementById('elList');
                 var sortable = Sortable.create(el, {
@@ -854,9 +858,17 @@
                     animation: 150,
                     draggable: '.draggable-element',
                     onSort: function (evt) {
-                        console.log(evt.item);
-                        console.log("old index = " + evt.oldIndex);
-                        console.log("new index = " + evt.newIndex);
+                        sortable.option("disabled", true); //disabling sortable during the call
+
+                        $.post('{{ path('composer_page_reorder') }}', {id: productId, order: sortable.toArray()}, function (data) {
+                            if(data.status === 'success' ) {
+                                sendSuccess(data.message);
+                            } else {
+                                sendError(data.message);
+                            }
+                            loadElementList();
+                            sortable.option("disabled", false);
+                        });
                     }
                 });
             }, 2000);
@@ -939,7 +951,7 @@
         /**
          * Template
          */
-        function linkListTemplate(pageName, pageType, pageId, pageOrder)
+        function linkListTemplate(pageName, pageType, pageId, pageOrder, documentId)
         {
             if(pageType === 'mainPage') {
                 var template = "<li style=\"padding-top: 5px;" +
@@ -952,7 +964,7 @@
             } else {
                 var template = "<li style=\"padding-top: 5px;" +
                     "    padding-bottom: 5px;" +
-                    "    border-bottom: 1px solid #EBEBEB;display:block;\" class=\"draggable-element\"><div class=\"row\"><div class=\"col-xs-10 text-left\">" +
+                    "    border-bottom: 1px solid #EBEBEB;display:block;\" data-pageid=\"" + documentId + "\" data-id=\"" + documentId + "\" class=\"draggable-element\"><div class=\"row\"><div class=\"col-xs-10 text-left\">" +
                     "<i class=\"fal fa-bars\" style=\"margin-right:3px;cursor:grabbing;\"></i> <a class=\"goToPageList\" href=\"#\" id=\"linkList-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">[" + ptToName(pageType) + "] " + pageName + "</a>" +
                     "</div><div class=\"col-xs-2 text-right\"><a class=\"btn deletePageFromList\" style=\"background-color:#003D50;align-self:right;margin:-1px;\" href=\"#\" id=\"linkListDelete-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">" +
                     "<i class=\"fas fa-trash-alt fa-sm\" style=\"color:#FFFFFF;\"></i></a></div></div>" +
