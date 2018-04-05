@@ -395,6 +395,7 @@
 
         function bindRadioPageSortable()
         {
+            console.log("binding");
             var elA = document.getElementById('radioContainer');
             var listSortable = Sortable.create(elA, {
                 handle: '.dragButton',
@@ -1009,7 +1010,7 @@
                 "            <input type=\"text\" id=\"radioPage_property-" + nextElement + "\" class=\"form-control\" name=\"property[" + nextElement + "]\">\n" +
                 "            <input type=\"text\" id=\"radioPage_value-" + nextElement + "\" class=\"form-control\" name=\"value[" + nextElement + "]\">\n" +
                 "<a class=\"btn\" style=\"background-color:#003D50;\" href=\"#\" class=\"radioElementRemover\" id=\"removeRow-" + nextElement + "\" data-row=\"" + nextElement + "\"><i class=\"far fa-times\" style=\"color:#FFFFFF\"></i></a>" +
-                "        </div>";
+                "<button class=\"btn dragButton\" style=\"background-color:#003D50;\" href=\"#\" id=\"dragList-" + nextElement + "\" data-row=\"" + nextElement + "\"><i class=\"fal fa-bars\" style=\"color:#FFFFFF;cursor:grabbing;\"></i></button></div>";
 
             return $(template);
         }
