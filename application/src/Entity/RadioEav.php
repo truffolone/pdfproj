@@ -26,7 +26,7 @@ class RadioEav
     /**
      * One Product has One Shipment.
      * @ORM\OneToOne(targetEntity="AttributeNameValue")
-     * @ORM\JoinColumn(name="eav_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="eav_id", referencedColumnName="id", unique=false)
      */
     private $eav;
 

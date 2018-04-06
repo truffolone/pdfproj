@@ -828,13 +828,29 @@ class ComposerController extends Controller
         $propertiesRepository = $em->getRepository(AttributeName::class);
         $valuesRepository = $em->getRepository(AttributeValue::class);
         $eavRepository = $em->getRepository(AttributeNameValue::class);
+        $radioEavRepository = $em->getRepository(RadioEav::class);
 
         /** inserting / updating the textPage */
         $radioPage->setTitle($title);
-        $radioPage->emptyAttributeNameValues();
+        $radioPage->emptyRadioEavs();
+        $em->persist($radioPage);
+        $em->flush();
+
+        /** removing eav */
+        $attributeNameValues = $radioEavRepository->findBy(
+            ['page' => $radioPage],
+            ['order' => 'ASC']
+        );
+
+        if ($attributeNameValues) {
+            foreach ($attributeNameValues as $atnv) {
+                $em->remove($atnv);
+            }
+            $em->flush();
+        }
 
         if (\count($properties) > 0) {
-            $eavOrder = 0;
+            $order = 0;
             foreach ($properties as $key => $value) {
                 /** Property */
                 $propertyString = trim($value);
@@ -851,11 +867,22 @@ class ComposerController extends Controller
 
                 /** Association */
                 $eav = $eavRepository->fromNameValueFacade($propertyFromDatabase, $valueFromDatabase);
-                $eav->setOrder($eavOrder);
 
-                /** eav on the radioPage */
-                $radioPage->addAttributeNameValue($eav);
-                $eavOrder++;
+                /** into the eav association */
+                $anvRP = new RadioEav();
+                $anvRP->setEav($eav);
+                $anvRP->setOrder($order);
+                $anvRP->setPage($radioPage);
+                $em->persist($anvRP);
+                $em->flush();
+
+                /** adding to inverse */
+                $radioPage->addRadioEav($anvRP);
+                $em->persist($radioPage);
+                $em->flush();
+
+                /** increasing order */
+                $order++;
             }
         }
 

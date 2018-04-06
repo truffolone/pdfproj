@@ -111,11 +111,11 @@ class RadioPage
     }
 
     /**
-     * @param RadioEav $radioEavs
+     * @param RadioEav $radioEav
      */
-    public function setRadioEavs(RadioEav $radioEavs): void
+    public function addRadioEav(RadioEav $radioEav): void
     {
-        $this->radioEavs[] = $radioEavs;
+        $this->radioEavs[] = $radioEav;
     }
 
     /**
