@@ -7,10 +7,10 @@
         <div class="listOfApplications">
             <table class="table-borderedRadio">
                 <tbody>
-                    {% for anv in page.page.attributeNameValues %}
+                    {% for anv in page.page.radioEavs %}
                         <tr>
-                            <td class="leftTablePdf">{{ anv.attributeName.name == '{EMPTY}' ? ' ' : anv.attributeName.name }}</td>
-                            <td class="rightTablePdf">{{ anv.attributeValue.value }}</td>
+                            <td class="leftTablePdf">{{ anv.eav.attributeName.name == '{EMPTY}' ? ' ' : anv.eav.attributeName.name }}</td>
+                            <td class="rightTablePdf">{{ anv.eav.attributeValue.value }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
