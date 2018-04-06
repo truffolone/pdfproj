@@ -33,11 +33,6 @@ class AttributeNameValue
     private $attributeValue;
 
     /**
-     * @ORM\Column(type="smallint", name="ordine", options={"default" : 0})
-     */
-    private $order;
-
-    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */

@@ -29,13 +29,9 @@ class RadioPage
     private $title;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\AttributeNameValue")
-     * @ORM\JoinTable(name="page_attribute_name_values",
-     *      joinColumns={@ORM\JoinColumn(name="radio_page_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="attribute_name_value_id", referencedColumnName="id")}
-     *      )
+     * @ORM\OneToMany(targetEntity="RadioEav", mappedBy="page")
      */
-    private $attributeNameValues;
+    private $radioEavs;
 
     /**
      * @ORM\OneToMany(
@@ -71,7 +67,7 @@ class RadioPage
         $this->createdAt= new \DateTime();
         $this->updatedAt= new \DateTime();
         $this->translations = new ArrayCollection();
-        $this->attributeNameValues = new ArrayCollection();
+        $this->radioEavs = new ArrayCollection();
     }
 
     /**
@@ -101,38 +97,25 @@ class RadioPage
     /**
      * @return void
      */
-    public function emptyAttributeNameValues() :void
+    public function emptyRadioEavs() :void
     {
-        $this->attributeNameValues = new ArrayCollection();
-    }
-
-    /**
-     * @param AttributeNameValue $eav
-     * @return void
-     */
-    public function addAttributeNameValue(AttributeNameValue $eav) :void
-    {
-        if ($this->attributeNameValues->contains($eav)) {
-            return;
-        }
-
-        $this->attributeNameValues[] = $eav;
+        $this->radioEavs = new ArrayCollection();
     }
 
     /**
      * @return mixed
      */
-    public function getAttributeNameValues()
+    public function getRadioEavs()
     {
-        return $this->attributeNameValues;
+        return $this->radioEavs;
     }
 
     /**
-     * @param mixed $attributeNameValues
+     * @param RadioEav $radioEavs
      */
-    public function setAttributeNameValues($attributeNameValues): void
+    public function setRadioEavs(RadioEav $radioEavs): void
     {
-        $this->attributeNameValues = $attributeNameValues;
+        $this->radioEavs[] = $radioEavs;
     }
 
     /**

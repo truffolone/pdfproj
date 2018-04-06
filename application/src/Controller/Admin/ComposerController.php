@@ -10,6 +10,7 @@ use App\Entity\Document;
 use App\Entity\ImagePage;
 use App\Entity\MainPage;
 use App\Entity\Product;
+use App\Entity\RadioEav;
 use App\Entity\RadioPage;
 use App\Entity\TablePage;
 use App\Entity\TextPage;
@@ -710,6 +711,7 @@ class ComposerController extends Controller
      * @param int|null $productId
      * @return JsonResponse
      * @throws \LogicException
+     * @throws \UnexpectedValueException
      */
     public function loadRadioPage($productId = null, $id = null): JsonResponse
     {
@@ -739,21 +741,11 @@ class ComposerController extends Controller
             );
         }
 
-        $attributeNameValues = [];
-
-        if ($anvs = $radioPage->getAttributeNameValues()) {
-            foreach ($anvs as $anv) {
-                $attributeNameValues[] = [
-                    'value' => $anv->getAttributeValue()->getValue(),
-                    'name' => $anv->getAttributeName()->getName(),
-                    'order' => $anv->getOrder()
-                ];
-            }
-
-            usort($attributeNameValues, function ($a, $b) {
-                return strcmp($a['order'], $b['order']);
-            });
-        }
+        $radioEavRepository = $em->getRepository(RadioEav::class);
+        $attributeNameValues = $radioEavRepository->findBy(
+            ['page' => $radioPage],
+            ['order' => 'ASC']
+        );
 
         /** loading the page content */
         $htmlData = $this
