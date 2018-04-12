@@ -197,7 +197,6 @@ class ComposerController extends Controller
      * @param int $id
      * @throws \Symfony\Component\HttpFoundation\File\Exception\FileException
      * @throws \LogicException
-     * @throws NonUniqueResultException
      * @throws InvalidArgumentException
      * @throws FileException
      * @return JsonResponse
@@ -226,6 +225,7 @@ class ComposerController extends Controller
             /** saving new product */
             $product = new Product();
             $productRevision = 1;
+            $productPublicRevision = 1;
 
             /** saving the main page */
             $mainPage = new MainPage();
@@ -244,6 +244,7 @@ class ComposerController extends Controller
             }
 
             $productRevision = $product->getRevision() + 1;
+            $productPublicRevision = $productData['publicRevision'];
 
             $productValidatorU = new UpdateProductRequest();
             $productValidator = $productValidatorU->fromProduct($product);
@@ -323,6 +324,7 @@ class ComposerController extends Controller
         $product->setDescription($productData['description']);
         $product->setImage($fileName);
         $product->setRevision($productRevision);
+        $product->setPublicRevision($productPublicRevision);
 
         $em->persist($product);
         $em->flush();
@@ -430,7 +432,6 @@ class ComposerController extends Controller
      * @return JsonResponse
      * @throws InvalidArgumentException
      * @throws \LogicException
-     * @throws NonUniqueResultException
      */
     public function sendTextPage(int $productId, $id, Request $request, ValidatorInterface $validator) :JsonResponse
     {

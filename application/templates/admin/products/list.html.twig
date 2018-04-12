@@ -79,7 +79,12 @@
                                     {{ product.description|striptags()|truncate(60) }}
                                 </td>
                                 <td>
-                                    <input data-pid="{{ path('admin_products_toggle_active', {'id': product.id}) }}" type="checkbox" id="activeSwitch-{{ product.id }}" class="js-switch"{% if product.active == 1 %} checked{% endif %} />
+                                    <input data-pid="{{ path('admin_products_toggle_active', {'id': product.id}) }}"
+                                           type="checkbox" id="activeSwitch-{{ product.id }}" style="display:inline" class="js-switch"
+                                            {% if product.active == 1 %} checked{% endif %} />
+                                    <div class="productPublicRevision" style="display:inline;margin-left:4%;font-weight:bold;" data-id="{{ product.id }}">
+                                        Revision: {{ product.publicRevision }}
+                                    </div>
                                 </td>
                                 <td class="actionsColumn">
                                     <button type="button" class="btn tt shareLinkModal" data-url="{{ absolute_url(path('printer_download', {'id': product.id})) }}" style="background-color:#003D50" data-toggle="modal" title="{% trans %}Get Download Link{% endtrans %}" data-target="#linkModal">

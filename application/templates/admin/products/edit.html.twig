@@ -551,6 +551,10 @@
             setTimeout(function(){
                 bindAjaxFormMainPage('mainPageForm', 'savePageButton');
             }, 1000);
+
+            $("#product_public_revision").on('change', function(e){
+                formIsChanged(e);
+            });
         }
 
         function addElementToList(pageName, pageType, pageId, documentId)

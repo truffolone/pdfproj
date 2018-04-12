@@ -5,6 +5,10 @@
         <label for="product_name">{% trans %}Product Name{% endtrans %}</label>
         <input class="form-control" name="product[name]" id="product_name" value="{{ product.name }}" placeholder="{% trans %}Product Name{% endtrans %}" required>
     </div>
+    <div class="form-group">
+        <label for="product_public_revision">{% trans %}Revision{% endtrans %}</label>
+        <input type="number" class="form-control" name="product[publicRevision]" id="product_public_revision" value="{{ product.publicRevision }}" placeholder="1" required>
+    </div>
     <div class="fileinput fileinput-new" data-provides="fileinput">
         <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
             {% if product.image != '' %}
@@ -25,18 +29,6 @@
         <label for="product_description">{% trans %}Product Description{% endtrans %}</label>
         <textarea id="product_description" class="form-control" name="product[description]">{{ product.description }}</textarea>
     </div>
-
-    <!-- Main Page Form -->
-    <!--<div class="form-group">
-        <label for="mainPage_title">{% trans %}Document Title{% endtrans %}</label>
-        <input class="form-control" name="mainPage[title]" id="product_name" value="{{ mainPage.title }}" placeholder="{% trans %}Document Title{% endtrans %}" required>
-    </div>
-    <div class="form-group">
-        <label for="mainPage_text">{% trans %}Document Description{% endtrans %}</label>
-        <textarea id="mainPage_text" class="form-control" name="mainPage[text]">
-            {{ mainPage.text }}
-        </textarea>
-    </div>-->
 
     <!-- Applicazioni -->
     <div class="form-group">

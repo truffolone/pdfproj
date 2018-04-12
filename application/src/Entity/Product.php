@@ -40,6 +40,11 @@ class Product
     private $revision;
 
     /**
+     * @ORM\Column(type="integer", options={"default":1})
+     */
+    private $publicRevision;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $image;
@@ -137,6 +142,23 @@ class Product
     public function setRevision($revision): void
     {
         $this->revision = $revision;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPublicRevision() :int
+    {
+        return $this->publicRevision;
+    }
+
+    /**
+     * @param int $publicRevision
+     * @return void
+     */
+    public function setPublicRevision(int $publicRevision): void
+    {
+        $this->publicRevision = $publicRevision;
     }
 
     /**
