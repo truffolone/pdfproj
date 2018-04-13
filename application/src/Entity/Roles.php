@@ -83,7 +83,7 @@ class Roles
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName() :string
     {
@@ -99,7 +99,7 @@ class Roles
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSlug() :string
     {

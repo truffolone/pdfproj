@@ -53,7 +53,9 @@ class DocumentRepository extends ServiceEntityRepository
 
     /**
      * @param int $productId
-     * @return mixed
+     *
+     * @return Document|null
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getNextOrder(int $productId) :?Document

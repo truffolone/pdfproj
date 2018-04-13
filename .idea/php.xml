@@ -88,6 +88,10 @@
       <path value="$PROJECT_DIR$/application/vendor/knplabs/knp-paginator-bundle" />
       <path value="$PROJECT_DIR$/application/vendor/knplabs/knp-snappy" />
       <path value="$PROJECT_DIR$/application/vendor/knplabs/knp-snappy-bundle" />
+      <path value="$PROJECT_DIR$/application/vendor/openlss/lib-array2xml" />
+      <path value="$PROJECT_DIR$/application/vendor/php-cs-fixer/diff" />
+      <path value="$PROJECT_DIR$/application/vendor/vimeo/psalm" />
+      <path value="$PROJECT_DIR$/application/vendor/muglug/package-versions-56" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

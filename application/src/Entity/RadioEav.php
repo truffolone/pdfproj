@@ -76,7 +76,7 @@ class RadioEav
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getOrder() :int
     {
