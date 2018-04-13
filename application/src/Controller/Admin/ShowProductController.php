@@ -13,6 +13,7 @@ use App\Entity\TextPage;
 use Hashids\Hashids;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -24,6 +25,15 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ShowProductController extends Controller
 {
+    /**
+     * @Route("/", name="_index")
+     * @return RedirectResponse
+     */
+    public function index() :RedirectResponse
+    {
+        return $this->redirectToRoute('admin_products_list');
+    }
+
     /**
      * @Route("/show/{id}", name="_show")
      * @param Product $product
@@ -119,8 +129,6 @@ class ShowProductController extends Controller
         Request $request,
         AuthorizationCheckerInterface $authChecker
     ) :Response {
-        /**$hashids = new \Hashids\Hashids();
-        $trueId = $hashids->decode($id);*/
         $trueId = $id;
         $em = $this->getDoctrine()->getManager();
         $productRepository = $em->getRepository(Product::class);

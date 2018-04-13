@@ -68,6 +68,10 @@
                     <i class="far fa-plus-circle"></i> {% trans %}Add a Page{% endtrans %}
                 </button>
 
+                <button type="button" class="btn btn-success" id="downloadPreview">
+                    <i class="far fa-download"></i> {% trans %}Download{% endtrans %}
+                </button>
+
                 <button type="button" id="savePageButton" class="btn btn-primary pull-right" disabled="disabled">
                     <i class="far fa-save"></i> {% trans %}Save Changes{% endtrans %}
                 </button>
@@ -246,6 +250,14 @@
                 }
 
             });
+
+            $("#downloadPreview").on('click', function(){
+                if(productId === 0) {
+                    return;
+                } else {
+                    window.location.href = "{{ path('printer_index') }}download/" + productId;
+                }
+            });
         });
 
         /**
@@ -259,7 +271,7 @@
                 return;
             }
 
-            var url = "{{ path('composer_load_document_list', {'id':product_id}) }}";
+            var url = "{{ path('composer_index') }}loadDocumentList/" + productId;
             $.get(url, function(data){
                 if(data.status === 'success') {
                     /** rendering list */

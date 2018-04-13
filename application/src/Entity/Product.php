@@ -40,7 +40,7 @@ class Product
     private $revision;
 
     /**
-     * @ORM\Column(type="integer", options={"default":1})
+     * @ORM\Column(type="float", options={"default":1})
      */
     private $publicRevision;
 
@@ -145,18 +145,18 @@ class Product
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getPublicRevision() :int
+    public function getPublicRevision() :float
     {
         return $this->publicRevision;
     }
 
     /**
-     * @param int $publicRevision
+     * @param float $publicRevision
      * @return void
      */
-    public function setPublicRevision(int $publicRevision): void
+    public function setPublicRevision(float $publicRevision): void
     {
         $this->publicRevision = $publicRevision;
     }

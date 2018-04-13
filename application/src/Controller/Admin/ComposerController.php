@@ -31,6 +31,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -56,6 +57,15 @@ class ComposerController extends Controller
     }
 
     /**
+     * @Route("/", name="_index")
+     * @return RedirectResponse
+     */
+    public function index() :RedirectResponse
+    {
+        return $this->redirectToRoute('admin_products_list');
+    }
+
+    /**
      * @Route("/loadMainPage/{id}", name="_load_main_page")
      * @param int $id
      * @throws \LogicException
@@ -75,6 +85,7 @@ class ComposerController extends Controller
             /** creating new page */
             $mainPage = new MainPage();
             $product = new Product();
+            $product->setPublicRevision(1);
         } else {
             /** loading main page for the product */
             $productRepository = $em->getRepository(Product::class);
