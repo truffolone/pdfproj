@@ -69,7 +69,7 @@
                 </button>
 
                 <button type="button" class="btn btn-success" id="downloadPreview">
-                    <i class="far fa-download"></i> {% trans %}Download{% endtrans %}
+                    <i class="far fa-download"></i> {% trans %}Download PDF{% endtrans %}
                 </button>
 
                 <button type="button" id="savePageButton" class="btn btn-primary pull-right" disabled="disabled">
@@ -326,8 +326,12 @@
                 image_advtab: true,
                 fontsize_formats: '6pt 8pt 10pt 12pt 14pt 18pt 24pt 36pt',
                 table_default_attributes: {
-                    'border': '1'
+                    'border': '1',
+                    class: 'mainTable'
                 },
+                table_class_list: [
+                    {title: 'Tabella Default', value: 'tableMain'}
+                ],
                 setup: function(editor) {
                     editor.on('change', function(e) {
                         formIsChanged(e);
@@ -626,7 +630,7 @@
                 submit.attr('disabled', true);
 
                 /** saving from tinymce */
-                $('#tablePage_text').html( tinyMCE.get('tablePage_text').getContent() );
+                $('#tablePage_text').html( tinyMCE.get('tablePage_text').getContent({format: 'raw'}) );
 
                 /** sending the form */
                 $.ajax({

@@ -1,5 +1,5 @@
 /*
- *  Bootstrap Duallistbox - v3.0.5
+ *  Bootstrap Duallistbox - v3.0.2
  *  A responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.
  *  http://www.virtuosoft.eu/code/bootstrap-duallistbox/
  *
@@ -11,7 +11,7 @@
     var pluginName = 'bootstrapDualListbox',
         defaults = {
             bootstrap2Compatible: false,
-            filterTextClear: 'show all',
+            filterTextClear: 'Clear Filter',
             filterPlaceHolder: 'Filter',
             moveSelectedLabel: 'Move selected',
             moveAllLabel: 'Move all',
@@ -29,11 +29,11 @@
             infoText: 'Showing all {0}',                                                        // text when all options are visible / false for no info text
             infoTextFiltered: '<span class="label label-warning">Filtered</span> {0} from {1}', // when not all of the options are visible due to the filter
             infoTextEmpty: 'Empty list',                                                        // when there are no options present in the list
-            filterOnValues: false,                                                              // filter by selector's values, boolean
-            sortByInputOrder: false
+            filterOnValues: false,                                                               // filter by selector's values, boolean
+            selectOnGroup: true                                                                 // select all children when group clicked
         },
-    // Selections are invisible on android if the containing select is styled with CSS
-    // http://code.google.com/p/android/issues/detail?id=16922
+        // Selections are invisible on android if the containing select is styled with CSS
+        // http://code.google.com/p/android/issues/detail?id=16922
         isBuggyAndroid = /android/i.test(navigator.userAgent.toLowerCase());
 
     // The actual plugin constructor
@@ -70,12 +70,6 @@
             var $item = $(item);
             if ($item.data('original-index') === original_index) {
                 $item.prop('selected', selected);
-                if(selected){
-                    $item.attr('data-sortindex', dualListbox.sortIndex);
-                    dualListbox.sortIndex++;
-                } else {
-                    $item.removeAttr('data-sortindex');
-                }
             }
         });
     }
@@ -128,35 +122,51 @@
 
         dualListbox.element.find('option').each(function(index, item) {
             var $item = $(item);
-            if ($item.prop('selected')) {
-                dualListbox.selectedElements++;
-                dualListbox.elements.select2.append($item.clone(true).prop('selected', $item.data('_selected')));
-            } else {
-                dualListbox.elements.select1.append($item.clone(true).prop('selected', $item.data('_selected')));
+            var selected = $item.prop('selected');
+            var ingroup = $item.parent().is('optgroup');
+
+            var list = selected ? dualListbox.elements.select2 : dualListbox.elements.select1;
+
+            if (selected) { dualListbox.selectedElements++; }
+
+            var tip = list;
+            if (ingroup) {
+                var $grp = $item.parent();
+                var label = $grp.attr('label');
+                var grpin = list.find('optgroup[label="' + label + '"]');
+                if (grpin.length === 0) {
+                    grpin = $('<optgroup/>').attr('label', label).on('click', { dlb: dualListbox }, selected? unselectGroup: selectGroup);
+                    list.append(grpin);
+                }
+                tip = grpin;
             }
+            tip.append($item.clone(true).prop('selected', $item.data('_selected')));
         });
 
         if (dualListbox.settings.showFilterInputs) {
-            filter(dualListbox, 1);
-            filter(dualListbox, 2);
+            filter(dualListbox, 1, false);
+            filter(dualListbox, 2, false);
         }
         refreshInfo(dualListbox);
     }
 
-    function filter(dualListbox, selectIndex) {
+    function filter(dualListbox, selectIndex, moveToTop) {
         if (!dualListbox.settings.showFilterInputs) {
             return;
         }
 
         saveSelections(dualListbox, selectIndex);
-
-        dualListbox.elements['select'+selectIndex].empty().scrollTop(0);
-        var regex = new RegExp($.trim(dualListbox.elements['filterInput'+selectIndex].val()), 'gi'),
-            allOptions = dualListbox.element.find('option'),
+        if (moveToTop !== false) {
+            dualListbox.elements['select' + selectIndex].empty().scrollTop(0);
+        }
+        else {
+            dualListbox.elements['select' + selectIndex].empty();
+        }
+        var regex = new RegExp($.trim(dualListbox.elements['filterInput' + selectIndex].val()), 'gi'),
             options = dualListbox.element;
 
         if (selectIndex === 1) {
-            options = allOptions.not(':selected');
+            options = options.find('option').not(':selected');
         } else  {
             options = options.find('option:selected');
         }
@@ -164,47 +174,63 @@
         options.each(function(index, item) {
             var $item = $(item),
                 isFiltered = true;
-            if (item.text.match(regex) || (dualListbox.settings.filterOnValues && $item.attr('value').match(regex) ) ) {
+            var ingroup = $item.parent().is('optgroup');
+            if (item.text.match(regex) || (ingroup && $item.parent().attr('label').match(regex)) || (dualListbox.settings.filterOnValues && $item.attr('value').match(regex) )) {
                 isFiltered = false;
-                dualListbox.elements['select'+selectIndex].append($item.clone(true).prop('selected', $item.data('_selected')));
+                var list = dualListbox.elements['select' + selectIndex];
+                var tip = list;
+                if (ingroup) {
+                    var $grp = $item.parent();
+                    var label = $grp.attr('label');
+                    var grpin = list.find('optgroup[label="' + label + '"]');
+                    if (grpin.length === 0) {
+                        grpin = $('<optgroup/>').attr('label', label).on('click', { dlb: dualListbox }, (selectIndex === 1) ? selectGroup : unselectGroup);
+                        list.append(grpin);
+                    }
+                    tip = grpin;
+                }
+                tip.append($item.clone(true).prop('selected', $item.data('_selected')));
             }
-            allOptions.eq($item.data('original-index')).data('filtered'+selectIndex, isFiltered);
+            dualListbox.element.find('option').eq($item.data('original-index')).data('filtered'+selectIndex, isFiltered);
         });
 
         refreshInfo(dualListbox);
     }
 
     function saveSelections(dualListbox, selectIndex) {
-        var options = dualListbox.element.find('option');
         dualListbox.elements['select'+selectIndex].find('option').each(function(index, item) {
             var $item = $(item);
-            options.eq($item.data('original-index')).data('_selected', $item.prop('selected'));
+            dualListbox.element.find('option').eq($item.data('original-index')).data('_selected', $item.prop('selected'));
         });
-    }
-
-    function sortOptionsByInputOrder(select){
-        var selectopt = select.children('option');
-
-        selectopt.sort(function(a,b){
-            var an = parseInt(a.getAttribute('data-sortindex')),
-                bn = parseInt(b.getAttribute('data-sortindex'));
-
-            if(an > bn) {
-                return 1;
-            }
-            if(an < bn) {
-                return -1;
-            }
-            return 0;
-        });
-
-        selectopt.detach().appendTo(select);
     }
 
     function sortOptions(select) {
-        select.find('option').sort(function(a, b) {
+        var $newgroups = $();
+        var options = select.find('option');
+        options.sort(function(a, b) {
             return ($(a).data('original-index') > $(b).data('original-index')) ? 1 : -1;
-        }).appendTo(select);
+        });
+        options.each(function (index, item) {
+            var $item = $(item);
+            var tip = select;
+            var ingroup = $item.parent().is('optgroup');
+            if (ingroup) {
+                var $grp = $item.parent();
+                var label = $grp.attr('label');
+                var grpin = select.find('optgroup[label="' + label + '"]');
+                if (grpin.length === 0) {
+                    grpin = $('<optgroup/>').attr('label', label);
+                    $newgroups.append(grpin);
+                    select.append(grpin);
+                }
+                else {
+                    grpin.appendTo(select);
+                }
+                tip = grpin;
+            }
+            $item.appendTo(tip);
+        });
+        return $newgroups;
     }
 
     function clearSelections(dualListbox) {
@@ -214,6 +240,7 @@
     }
 
     function move(dualListbox) {
+        var scrollPos = dualListbox.elements.select1.scrollTop();
         if (dualListbox.settings.preserveSelectionOnMove === 'all' && !dualListbox.settings.moveOnSelect) {
             saveSelections(dualListbox, 1);
             saveSelections(dualListbox, 2);
@@ -229,12 +256,9 @@
         });
 
         refreshSelects(dualListbox);
+        dualListbox.elements.select1.scrollTop(scrollPos);
         triggerChangeEvent(dualListbox);
-        if(dualListbox.settings.sortByInputOrder){
-            sortOptionsByInputOrder(dualListbox.elements.select2);
-        } else {
-            sortOptions(dualListbox.elements.select2);
-        }
+        sortOptions(dualListbox.elements.select2).on('click', {dlb: dualListbox}, unselectGroup);
     }
 
     function remove(dualListbox) {
@@ -254,7 +278,31 @@
 
         refreshSelects(dualListbox);
         triggerChangeEvent(dualListbox);
-        sortOptions(dualListbox.elements.select1);
+        sortOptions(dualListbox.elements.select1).on('click', { dlb: dualListbox }, selectGroup);
+    }
+
+    function selectGroup(e)
+    {
+        $(this).find('option').each(function (index, item) {
+            var $item = $(item);
+            if (!$item.data('filtered1')) {
+                changeSelectionState(e.data.dlb, $item.data('original-index'), true);
+            }
+        });
+        move(e.data.dlb);
+        e.preventDefault();
+    }
+
+    function unselectGroup(e)
+    {
+        $(this).find('option').each(function (index, item) {
+            var $item = $(item);
+            if (!$item.data('filtered2')) {
+                changeSelectionState(e.data.dlb, $item.data('original-index'), false);
+            }
+        });
+        remove(e.data.dlb);
+        e.preventDefault();
     }
 
     function moveAll(dualListbox) {
@@ -269,8 +317,6 @@
             var $item = $(item);
             if (!$item.data('filtered1')) {
                 $item.prop('selected', true);
-                $item.attr('data-sortindex', dualListbox.sortIndex);
-                dualListbox.sortIndex++;
             }
         });
 
@@ -290,7 +336,6 @@
             var $item = $(item);
             if (!$item.data('filtered2')) {
                 $item.prop('selected', false);
-                $item.removeAttr('data-sortindex');
             }
         });
 
@@ -355,7 +400,6 @@
                 '   <label></label>' +
                 '   <span class="info-container">' +
                 '     <span class="info"></span>' +
-                '     <button type="button" class="btn clear1 pull-right"></button>' +
                 '   </span>' +
                 '   <input class="filter" type="text">' +
                 '   <div class="btn-group buttons">' +
@@ -366,6 +410,12 @@
                 '     <button type="button" class="btn move">' +
                 '       <i></i>' +
                 '     </button>' +
+                '     <button type="button" class="btn clear1">' +
+                '       <span class="fa-stack fa-lg">' +
+                '         <i class="fa fa-filter fa-stack-1x"></i>' +
+                '         <i class="fa fa-ban fa-stack-2x text-danger"></i>' +
+                '       </span>' +
+                '     </button>' +
                 '   </div>' +
                 '   <select multiple="multiple"></select>' +
                 ' </div>' +
@@ -373,7 +423,6 @@
                 '   <label></label>' +
                 '   <span class="info-container">' +
                 '     <span class="info"></span>' +
-                '     <button type="button" class="btn clear2 pull-right"></button>' +
                 '   </span>' +
                 '   <input class="filter" type="text">' +
                 '   <div class="btn-group buttons">' +
@@ -383,6 +432,12 @@
                 '     <button type="button" class="btn removeall">' +
                 '       <i></i>' +
                 '       <i></i>' +
+                '     </button>' +
+                '     <button type="button" class="btn clear2">' +
+                '       <span class="fa-stack fa-lg">' +
+                '         <i class="fa fa-filter fa-stack-1x"></i>' +
+                '         <i class="fa fa-ban fa-stack-2x text-danger"></i>' +
+                '       </span>' +
                 '     </button>' +
                 '   </div>' +
                 '   <select multiple="multiple"></select>' +
@@ -423,7 +478,6 @@
 
             // Apply all settings
             this.selectedElements = 0;
-            this.sortIndex = 0;
             this.elementCount = 0;
             this.setBootstrap2Compatible(this.settings.bootstrap2Compatible);
             this.setFilterTextClear(this.settings.filterTextClear);
@@ -448,13 +502,13 @@
             this.setInfoTextFiltered(this.settings.infoTextFiltered);
             this.setInfoTextEmpty(this.settings.infoTextEmpty);
             this.setFilterOnValues(this.settings.filterOnValues);
-            this.setSortByInputOrder(this.settings.sortByInputOrder);
 
             // Hide the original select
             this.element.hide();
 
             bindEvents(this);
             refreshSelects(this);
+            this.setSelectOnGroup(this.settings.selectOnGroup);
 
             return this.element;
         },
@@ -471,7 +525,7 @@
             } else {
                 this.container.removeClass('row-fluid bs2compatible').addClass('row');
                 this.container.find('.box1, .box2').removeClass('span6').addClass('col-md-6');
-                this.container.find('.clear1, .clear2').removeClass('btn-mini').addClass('btn-default btn-xs');
+                //this.container.find('.clear1, .clear2').removeClass('btn-mini').addClass('btn-default btn-xs');
                 this.container.find('input, select').addClass('form-control');
                 this.container.find('.btn').addClass('btn-default');
                 this.container.find('.moveall > i, .move > i').removeClass('icon-arrow-right').addClass('glyphicon glyphicon-arrow-right');
@@ -618,6 +672,22 @@
             }
             return this.element;
         },
+        setSelectOnGroup: function(value, refresh) {
+            this.settings.selectOnGroup = value;
+            if (this.settings.selectOnGroup) {
+                this.container.addClass('selectongroup');
+                this.elements.select1.find('optgroup').on('click', { dlb: this }, selectGroup);
+                this.elements.select2.find('optgroup').on('click', { dlb: this }, unselectGroup);
+            } else {
+                this.container.removeClass('selectongroup');
+                this.elements.select1.find('optgroup').off('click', selectGroup);
+                this.elements.select2.find('optgroup').off('click', unselectGroup);
+            }
+            if (refresh) {
+                refreshSelects(this);
+            }
+            return this.element;
+        },
         setShowFilterInputs: function(value, refresh) {
             if (!value) {
                 this.setNonSelectedFilter('');
@@ -678,13 +748,6 @@
         },
         setFilterOnValues: function(value, refresh) {
             this.settings.filterOnValues = value;
-            if (refresh) {
-                refreshSelects(this);
-            }
-            return this.element;
-        },
-        setSortByInputOrder: function(value, refresh){
-            this.settings.sortByInputOrder = value;
             if (refresh) {
                 refreshSelects(this);
             }

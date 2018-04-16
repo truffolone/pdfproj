@@ -35,8 +35,12 @@
         <label for="mainPage_applications">{% trans %}Applications{% endtrans %}</label>
         <select id="mainPage_applications" name="mainPage[applications][]" class="form-control dual_select" multiple
                 required>
-            {% for application in allApplications %}
-                <option value="{{ application.id }}"{% if application.id in mainPageApplications %} selected{% endif %}>{{ application.name }}</option>
+            {% for applicationCategory, applications in allApplications %}
+                <optgroup label="{{ applicationCategory }}">
+                    {% for application in applications %}
+                        <option value="{{ application.id }}"{% if application.id in mainPageApplications %} selected{% endif %}>{{ application.name }}</option>
+                    {% endfor %}
+                </optgroup>
             {% endfor %}
         </select>
     </div>

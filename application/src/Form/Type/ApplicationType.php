@@ -30,7 +30,7 @@ class ApplicationType extends AbstractType
                 [
                     'label' => 'categories',
                     'translation_domain' => 'messages',
-                    'multiple' => true,
+                    'multiple' => false,
                     'class' => Category::class,
                     'choice_label' => 'name'
                 ]

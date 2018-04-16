@@ -10,7 +10,6 @@ class CreateProductRequest
     /**
      * @Assert\NotBlank()
      * @Assert\Length(min=2, max=255)
-     * @TruffoloneAssert\IsProductNameUnique()
      * @var string
      */
     public $name;

@@ -132,7 +132,24 @@ class ComposerController extends Controller
 
         /** Loading Applications List */
         $applicationRepository = $em->getRepository(Application::class);
-        $allApplications = $applicationRepository->findAll();
+        $unorderedApplications = $applicationRepository->findAll();
+        $allApplications = [];
+        foreach ($unorderedApplications as $application) {
+            if (empty($application->getCategories())) {
+                continue;
+            }
+
+            $applicationCategory = $application->getCategories()[0]->getName();
+
+            if (!array_key_exists($applicationCategory, $allApplications)) {
+                $allApplications[$applicationCategory] = [];
+            }
+
+            $allApplications[$applicationCategory][] = [
+                'name' => $application->getName(),
+                'id' => $application->getId()
+            ];
+        }
 
         /** loading the page content */
         $htmlData = $this

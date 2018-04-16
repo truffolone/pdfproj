@@ -8,7 +8,6 @@ use App\Validator\Constraints as TruffoloneAssert;
 
 /**
  * Class UpdateRoleRequest
- * @TruffoloneAssert\IsApplicationNameUniqueUpdate()
  * @package App\Form\Requests
  */
 class UpdateApplicationRequest
