@@ -20,9 +20,9 @@
             </span>
             <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
         </div>
-        <div class="form-group">
-            <label for="imagePage_text">{% trans %}Page Text{% endtrans %}</label>
-            <textarea id="imagePage_text" class="form-control" name="description">{{ imagePage.description }}</textarea>
-        </div>
+    </div>
+    <div class="form-group">
+        <label for="imagePage_text">{% trans %}Image Description{% endtrans %}</label>
+        <textarea id="imagePage_text" rows="1" class="form-control" name="description">{{ imagePage.description }}</textarea>
     </div>
 </form>

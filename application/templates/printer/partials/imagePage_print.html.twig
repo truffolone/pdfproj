@@ -7,6 +7,9 @@
         <div class="listOfApplications">
             <div class="divImagePage">
                 <img class="imageForImagePage" src="{{ absolute_url(asset(upload_images_pdf_directory ~ "/" ~ page.page.image)) }}">
+                {% if page.page.description != '' %}
+                    <p class="condensed_small" style="text-align: left !important;">{{ page.page.description }}</p>
+                {% endif %}
             </div>
         </div>
    </div>

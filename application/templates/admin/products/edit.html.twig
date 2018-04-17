@@ -322,22 +322,30 @@
                 selector:'#tablePage_text',
                 height: 500,
                 theme: 'modern',
-                plugins: 'table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern code',
-                toolbar1: 'code | formatselect | bold italic strikethrough forecolor backcolor | fontselect fontsizeselect | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+                plugins: 'lineheight table charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern',
+                toolbar1: 'fontselect | formatselect fontsizeselect | bold italic strikethrough forecolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | lineheightselect removeformat',
                 image_advtab: true,
-                fontsize_formats: '7pt 9pt 11pt 13pt 15pt 19pt 25pt 35pt',
-                font_formats: 'Arial=arial,helvetica,sans-serif;Dinot Condensed Bold=dinot-condbold,sans-serif;Dinot Bold=dinot-bold,sans-serif;Dinot Medium=dinot-medium,sans-serif;Dinot=dinot,sans-serif;Dinot Condensed=dinot-cond,sans-serif;',
-                table_default_attributes: {
-                    'border': '1',
-                    class: 'mainTable'
-                },
-                table_class_list: [
-                    {title: 'Tabella Default', value: 'tableMain'}
+                content_css: [
+                    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                    '//www.tinymce.com/css/codepen.min.css'
                 ],
+                fontsize_formats: '7pt 9pt 11pt 12pt 13pt 14pt 15pt 16pt 17pt 18pt 19pt 20pt 25pt 35pt',
+                font_formats: 'Arial=arial,helvetica,sans-serif;Dinot Condensed Bold=dinot-condbold,sans-serif;Dinot Bold=dinot-bold,sans-serif;Dinot Medium=dinot-medium,sans-serif;Dinot=dinot,sans-serif;Dinot Condensed=dinot-cond,sans-serif;',
                 setup: function(editor) {
                     editor.on('change', function(e) {
                         formIsChanged(e);
                     });
+                },
+                table_default_attributes: {
+                    'border': '1',
+                    class: 'tabellaBordoBianco'
+                },
+                table_class_list: [
+                    {title: 'Tabella Bordo Bianco', value: 'tabellaBordoBianco'},
+                    {title: 'Tabella Bordo Blu', value: 'tabellaBordoBlu'}
+                ],
+                formats: {
+                    bold: {inline : 'span', 'classes' : 'bold'}
                 }
             });
 
@@ -514,10 +522,11 @@
                 },
                 table_default_attributes: {
                     'border': '1',
-                    class: 'mainTable'
+                    class: 'tabellaBordoBianco'
                 },
                 table_class_list: [
-                    {title: 'Tabella Default', value: 'tableMain'}
+                    {title: 'Tabella Bordo Bianco', value: 'tabellaBordoBianco'},
+                    {title: 'Tabella Bordo Blu', value: 'tabellaBordoBlu'}
                 ],
                 formats: {
                     bold: {inline : 'span', 'classes' : 'bold'}
@@ -559,19 +568,30 @@
                 selector:'#product_description',
                 height: 500,
                 theme: 'modern',
-                plugins: 'charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern code',
-                toolbar1: 'code | formatselect | bold italic strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+                plugins: 'lineheight table charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern',
+                toolbar1: 'fontselect | formatselect fontsizeselect | bold italic strikethrough forecolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | lineheightselect removeformat',
                 image_advtab: true,
-                fontsize_formats: '7pt 9pt 11pt 13pt 15pt 19pt 25pt 35pt',
                 content_css: [
                     '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-                    '//www.tinymce.com/css/codepen.min.css',
+                    '//www.tinymce.com/css/codepen.min.css'
                 ],
+                fontsize_formats: '7pt 9pt 11pt 12pt 13pt 14pt 15pt 16pt 17pt 18pt 19pt 20pt 25pt 35pt',
                 font_formats: 'Arial=arial,helvetica,sans-serif;Dinot Condensed Bold=dinot-condbold,sans-serif;Dinot Bold=dinot-bold,sans-serif;Dinot Medium=dinot-medium,sans-serif;Dinot=dinot,sans-serif;Dinot Condensed=dinot-cond,sans-serif;',
                 setup: function(editor) {
                     editor.on('change', function(e) {
                         formIsChanged(e);
                     });
+                },
+                table_default_attributes: {
+                    'border': '1',
+                    class: 'tabellaBordoBianco'
+                },
+                table_class_list: [
+                    {title: 'Tabella Bordo Bianco', value: 'tabellaBordoBianco'},
+                    {title: 'Tabella Bordo Blu', value: 'tabellaBordoBlu'}
+                ],
+                formats: {
+                    bold: {inline : 'span', 'classes' : 'bold'}
                 }
             });
 
@@ -739,6 +759,7 @@
 
             /** onchange event */
             $("#imagePage_title").change(function(e){formIsChanged(e)});
+            $("#imagePage_text").change(function(e){formIsChanged(e)});
             $("#imagePage_file").change(function(e){formIsChanged(e)});
 
             submit.on('click', function(e) {
@@ -798,7 +819,7 @@
                 /** hooking into the submit button */
                 submit.attr('disabled', true);
 
-                $('#textPage_text').html( tinyMCE.get('textPage_text').getContent() );
+                $('#textPage_text').html( tinyMCE.get('textPage_text').getContent({format: 'raw'}) );
 
                 /** sending the form */
                 $.ajax({
@@ -850,7 +871,7 @@
                 /** hooking into the submit button */
                 submit.attr('disabled', true);
 
-                $('#product_description').html( tinyMCE.get('product_description').getContent() );
+                $('#product_description').html( tinyMCE.get('product_description').getContent({format: 'raw'}) );
 
                 var formToSendSerialized = new FormData(form[0]);
 
