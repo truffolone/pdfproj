@@ -325,7 +325,8 @@
                 plugins: 'table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern code',
                 toolbar1: 'code | formatselect | bold italic strikethrough forecolor backcolor | fontselect fontsizeselect | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
                 image_advtab: true,
-                fontsize_formats: '6pt 8pt 10pt 12pt 14pt 18pt 24pt 36pt',
+                fontsize_formats: '7pt 9pt 11pt 13pt 15pt 19pt 25pt 35pt',
+                font_formats: 'Arial=arial,helvetica,sans-serif;Dinot Condensed Bold=dinot-condbold,sans-serif;Dinot Bold=dinot-bold,sans-serif;Dinot Medium=dinot-medium,sans-serif;Dinot=dinot,sans-serif;Dinot Condensed=dinot-cond,sans-serif;',
                 table_default_attributes: {
                     'border': '1',
                     class: 'mainTable'
@@ -461,26 +462,6 @@
 
         function afterImagePageLoaded()
         {
-            tinyMCE.remove();
-
-            tinyMCE.init({
-                selector:'#imagePage_text',
-                height: 500,
-                theme: 'modern',
-                plugins: 'charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern code',
-                toolbar1: 'code | formatselect | bold italic strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
-                image_advtab: true,
-                content_css: [
-                    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-                    '//www.tinymce.com/css/codepen.min.css',
-                ],
-                setup: function(editor) {
-                    editor.on('change', function(e) {
-                        formIsChanged(e);
-                    });
-                }
-            });
-
             $(".fileinput").fileinput();
 
             bindAjaxFormImagePage('imagePageForm', 'savePageButton');
@@ -517,17 +498,29 @@
                 selector:'#textPage_text',
                 height: 500,
                 theme: 'modern',
-                plugins: 'charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern',
-                toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+                plugins: 'lineheight table charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern',
+                toolbar1: 'fontselect | formatselect fontsizeselect | bold italic strikethrough forecolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | lineheightselect removeformat',
                 image_advtab: true,
                 content_css: [
                     '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
                     '//www.tinymce.com/css/codepen.min.css'
                 ],
+                fontsize_formats: '7pt 9pt 11pt 12pt 13pt 14pt 15pt 16pt 17pt 18pt 19pt 20pt 25pt 35pt',
+                font_formats: 'Arial=arial,helvetica,sans-serif;Dinot Condensed Bold=dinot-condbold,sans-serif;Dinot Bold=dinot-bold,sans-serif;Dinot Medium=dinot-medium,sans-serif;Dinot=dinot,sans-serif;Dinot Condensed=dinot-cond,sans-serif;',
                 setup: function(editor) {
                     editor.on('change', function(e) {
                         formIsChanged(e);
                     });
+                },
+                table_default_attributes: {
+                    'border': '1',
+                    class: 'mainTable'
+                },
+                table_class_list: [
+                    {title: 'Tabella Default', value: 'tableMain'}
+                ],
+                formats: {
+                    bold: {inline : 'span', 'classes' : 'bold'}
                 }
             });
 
@@ -569,10 +562,12 @@
                 plugins: 'charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern code',
                 toolbar1: 'code | formatselect | bold italic strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
                 image_advtab: true,
+                fontsize_formats: '7pt 9pt 11pt 13pt 15pt 19pt 25pt 35pt',
                 content_css: [
                     '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
                     '//www.tinymce.com/css/codepen.min.css',
                 ],
+                font_formats: 'Arial=arial,helvetica,sans-serif;Dinot Condensed Bold=dinot-condbold,sans-serif;Dinot Bold=dinot-bold,sans-serif;Dinot Medium=dinot-medium,sans-serif;Dinot=dinot,sans-serif;Dinot Condensed=dinot-cond,sans-serif;',
                 setup: function(editor) {
                     editor.on('change', function(e) {
                         formIsChanged(e);
@@ -751,9 +746,6 @@
 
                 /** hooking into the submit button */
                 submit.attr('disabled', true);
-
-                /** saving from tinymce */
-                $('#imagePage_text').html( tinyMCE.get('imagePage_text').getContent({format: 'raw'}) );
 
                 /** sending the form */
                 $.ajax({
