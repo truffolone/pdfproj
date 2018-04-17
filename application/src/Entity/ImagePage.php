@@ -34,6 +34,12 @@ class ImagePage
     private $image;
 
     /**
+     * @Gedmo\Translatable()
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
      * @ORM\OneToMany(
      *   targetEntity="ImagePageTranslation",
      *   mappedBy="object",
@@ -108,6 +114,22 @@ class ImagePage
     public function setImage($image) :void
     {
         $this->image = $image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
     }
 
     /**

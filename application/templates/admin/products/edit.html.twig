@@ -302,6 +302,7 @@
                     el.empty().append($(data.data));
                     afterTablePageLoaded();
                     modalSelect.modal('hide');
+                    formIsSaved();
                     return true;
                 } else {
                     sendError(data.message);
@@ -353,6 +354,7 @@
                     el.empty().append($(data.data));
                     afterRadioPageLoaded();
                     modalSelect.modal('hide');
+                    formIsSaved();
                     return true;
                 } else {
                     sendError(data.message);
@@ -445,6 +447,7 @@
                     el.empty().append($(data.data));
                     afterImagePageLoaded();
                     modalSelect.modal('hide');
+                    formIsSaved();
                     return true;
                 } else {
                     sendError(data.message);
@@ -458,6 +461,26 @@
 
         function afterImagePageLoaded()
         {
+            tinyMCE.remove();
+
+            tinyMCE.init({
+                selector:'#imagePage_text',
+                height: 500,
+                theme: 'modern',
+                plugins: 'charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern code',
+                toolbar1: 'code | formatselect | bold italic strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+                image_advtab: true,
+                content_css: [
+                    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                    '//www.tinymce.com/css/codepen.min.css',
+                ],
+                setup: function(editor) {
+                    editor.on('change', function(e) {
+                        formIsChanged(e);
+                    });
+                }
+            });
+
             $(".fileinput").fileinput();
 
             bindAjaxFormImagePage('imagePageForm', 'savePageButton');
@@ -474,6 +497,7 @@
                     el.empty().append($(data.data));
                     afterTextPageLoaded();
                     modalSelect.modal('hide');
+                    formIsSaved();
                     return true;
                 } else {
                     sendError(data.message);
@@ -521,6 +545,7 @@
                     /** rendering page */
                     el.empty().append($(data.data));
                     afterMainPageLoaded();
+                    formIsSaved();
                     return true;
                 } else {
                     sendError(data.message);
@@ -541,8 +566,8 @@
                 selector:'#product_description',
                 height: 500,
                 theme: 'modern',
-                plugins: 'charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern',
-                toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+                plugins: 'charmap hr anchor toc insertdatetime advlist lists textcolor contextmenu colorpicker textpattern code',
+                toolbar1: 'code | formatselect | bold italic strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
                 image_advtab: true,
                 content_css: [
                     '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
@@ -726,6 +751,9 @@
 
                 /** hooking into the submit button */
                 submit.attr('disabled', true);
+
+                /** saving from tinymce */
+                $('#imagePage_text').html( tinyMCE.get('imagePage_text').getContent({format: 'raw'}) );
 
                 /** sending the form */
                 $.ajax({

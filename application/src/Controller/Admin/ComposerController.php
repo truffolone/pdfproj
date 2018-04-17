@@ -1062,6 +1062,7 @@ class ComposerController extends Controller
 
         /** Request */
         $title = $request->request->get('title', '');
+        $descrizione = $request->request->get('description', '');
         $image = $request->files->get('image');
 
         /** checking image */
@@ -1105,6 +1106,7 @@ class ComposerController extends Controller
         /** inserting / updating the textPage */
         $imagePage->setTitle($title);
         $imagePage->setImage($fileName);
+        $imagePage->setDescription($descrizione);
 
         $em->persist($imagePage);
         $em->flush();

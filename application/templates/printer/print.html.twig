@@ -92,7 +92,7 @@
 
         .triangleTop {
             position: absolute;
-            margin-top: -20mm;
+            margin-top: -17mm;
             margin-bottom: 20mm;
             height: 10mm;
             margin-left: -1mm;
@@ -103,7 +103,7 @@
             color: #ffffff;
             font-size: 13pt;
             font-family: 'dinot-bold', Fallback, sans-serif;
-            padding-top: 15mm;
+            
             margin-bottom: 0mm;
         }
 
@@ -160,15 +160,16 @@
         p.condensed {
             font-family: 'dinot-cond', Fallback, sans-serif;
             padding-right: 0;
-            font-size: 16pt;
+            font-size: 18pt;
             color: #003D50;
         }
 
         p.condensed_small {
             font-family: 'dinot-cond', Fallback, sans-serif;
             padding-right: 0;
-            font-size: 10pt;
-            color: #003D50;
+            font-size: 13pt;
+            color: #003D50!important;
+            line-height: 10mm;
         }
 
         img.catIcon {
@@ -178,10 +179,10 @@
 
         .pdfCatTableH {
             width: 25mm;
-            vertical-align: top;
+            vertical-align: middle;
             margin-top: 0;
-            margin-bottom: 0;
-            font-size: 2.8mm;
+            padding: 2mm;
+            font-size: 8pt;
             font-family: 'dinot-medium', Fallback, sans-serif;
             color: #003D50;
             text-transform: uppercase;
@@ -255,22 +256,17 @@
         }
 
         .pdfContainerWhite {
-            padding-left: 15mm;
-            padding-right: 15mm;
+            padding: 15mm;
             background-color: #ffffff !important;
             page-break-inside: avoid;
-            margin-bottom: 10mm;
-            margin-top: 10mm;
         }
 
 
 
         .pdfContainerGrey {
-            padding-left: 15mm;
-            padding-right: 15mm;
-            background-color: #eeeeee !important;
-            margin-bottom: 10mm;
-            margin-top: 10mm;
+            padding: 15mm;
+            background-color: #f2f5f6 !important;
+            page-break-inside: avoid;
         }
 
         {# .pdfContainerGrey {
@@ -300,7 +296,7 @@
             color: #003D50;
             margin-top: 3mm!important;
             margin-bottom: 0mm!important;
-            line-height: 0.6mm;
+            line-height: 5mm;
         }
 
 
@@ -312,7 +308,7 @@
             font-weight: bold;
             margin-bottom: 3mm!important;
             margin-top: 3mm!important;
-            line-height: 0.6mm;
+            line-height: 2mm;
         }
 
 
@@ -417,7 +413,7 @@
             font-size: 5.2mm;
         }
 
-        /*table.mainTable {
+        table.mainTable {
             font-family: 'dinot-cond', Fallback, sans-serif !important;
             border: 3px solid;
             border-color: #ffffff;
@@ -426,7 +422,7 @@
         table.mainTable td {
             border: 3px solid;
             border-color: #ffffff;
-        }*/
+        }
 
         .divImagePage {
             text-align: center;
@@ -507,15 +503,16 @@
     <div class="footerrimo">
         <table border="0" width="100%" style="margin-top:5mm;margin-right:15mm;">
             <tr>
-                <td align="left"><h2 style="font-family:'dinot-black', Fallback, sans-serif;font-size: 36pt;color:#4AB7A9;font-weight:500;">gvfiltri.it</h2></td>
-                <td align="right"><p style="font-family:'dinot-bold', Fallback, sans-serif;font-size:18pt;text-transform: uppercase; color:#FFFFFF;">{{ product.name }}</p></td>
+                <td align="left" width="30%"><h2 style="font-family:'dinot-black', Fallback, sans-serif;font-size: 36pt; color:#4AB7A9; font-weight:500;">gvfiltri.it</h2></td>
+                <td align="right" width="70%" style="font-family:'dinot-bold', Fallback, sans-serif; font-size: 20pt; text-transform: uppercase; color:#FFFFFF; vertical-align: middle;">{{ product.name }}</td>
             </tr>
         </table>
-        <span style="font-family:'dinot-light', Fallback, sans-serif;font-size: 9pt;color: #4AB7A9; display: inline-block;">Via Chieri 85/1 | Baldissero Torinese - 10020 | Phone +39 011-9442304 | Fax. +39 011-9442973 | info@gvfiltri.it</span>
-        <span style="font-family:'dinot-light', Fallback, sans-serif; font-size: 9pt;color:#FFFFFF;">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        {% trans %}Revision{% endtrans %}: {{ product.publicRevision }}</span>
+        <table border="0" width="100%" style="margin-top:5mm;margin-right:15mm;">
+            <tr>
+                <td align="left" width="90%" style="font-family:'dinot', Fallback, sans-serif; font-size: 14pt; color: #4AB7A9;">Via Chieri 85/1 | Baldissero Torinese - 10020 | Phone +39 011-9442304 | Fax. +39 011-9442973 | info@gvfiltri.it</td>
+                <td align="right" width="10%" style="font-family:'dinot', Fallback, sans-serif; font-size: 14pt; color:#FFFFFF;">{% trans %}Revision{% endtrans %}: {{ product.publicRevision }}</td>
+            </tr>
+        </table>
     </div>
     
 </div>

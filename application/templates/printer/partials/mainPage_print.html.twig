@@ -1,10 +1,10 @@
 <div class="pdfContainer keep-together">
     <div class="row mainPageRow">
         <img src="{{ absolute_url(asset('images/triangolo_blu.png')) }}" class="triangleTop">
-        <h1 class="pdfMainPageTitle">{{ page.page.title }}</h1>
-        <table border="0" >
+        <h1 style="font-weight: bold; color: #ffffff; text-transform: uppercase; font-size: 23pt; font-family: 'dinot-bold', Fallback, sans-serif; margin-top: -15mm;">{{ page.page.title }}</h1>
+        <table border="0">
             <tr>
-                <td valign="top" >
+                <td valign="top"> 
                     <div class="righettaBlu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                     <br>
                     <p class="condensed">
@@ -16,7 +16,7 @@
 
                         <tr class="thMarkets" style="border: 1px solid white;">
                             {% for category in categories %}
-                                <td class="pdfCatTableH"{% if loop.index0 > 0 %} style="border-left: 1px solid white;"{% endif %}>{{ category.name }}</td>
+                                <td class="pdfCatTableH"{% if loop.index0 > 0 %} style="border-left: 1px solid white;"{% endif %}><br>{{ category.name }}<br><br></td>
                             {% endfor %}
                         </tr>
                         <tr class="tdMarkets">
@@ -27,7 +27,7 @@
                     </table>
                 </td>
                 <td valign="bottom" align="center">
-                    <img src="{{ absolute_url(asset(upload_images_directory ~ '/' ~ product.image)) }}" style="margin-left: 10mm; margin-bottom: -20%; max-width: 80mm;">
+                    <img src="{{ absolute_url(asset(upload_images_directory ~ '/' ~ product.image)) }}" style="margin-left: 10mm; margin-bottom: -20%; width: 90mm; max-height:150mm;">
                 </td>
             </tr>
         </table>

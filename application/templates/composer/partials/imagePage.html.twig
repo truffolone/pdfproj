@@ -6,7 +6,11 @@
         <input class="form-control" name="title" id="imagePage_title" value="{{ imagePage.title }}" placeholder="{% trans %}Page Title{% endtrans %}">
     </div>
     <div class="fileinput fileinput-new" data-provides="fileinput">
-        <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+        <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+            {% if imagePageId > 0 %}
+                <img src="{{ asset(upload_images_pdf_directory ~ '/' ~ imagePage.image) }}" style="max-height:400px;">
+            {% endif %}
+        </div>
         <div>
             <span class="btn btn-default btn-file">
                 <span class="fileinput-new">{% trans %}New{% endtrans %}</span>
@@ -16,10 +20,9 @@
             </span>
             <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
         </div>
-    </div>
-    {% if imagePageId > 0 %}
         <div class="form-group">
-            <img src="{{ asset(upload_images_pdf_directory ~ '/' ~ imagePage.image) }}" style="max-height:400px;">
+            <label for="imagePage_text">{% trans %}Page Text{% endtrans %}</label>
+            <textarea id="imagePage_text" class="form-control" name="description">{{ imagePage.description }}</textarea>
         </div>
-    {% endif %}
+    </div>
 </form>
