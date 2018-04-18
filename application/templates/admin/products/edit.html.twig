@@ -174,6 +174,8 @@
         var pageElementCount = 0;
         var modalSelect = $("#modalSelect");
         var unsavedChanges = 0;
+        var typeSelected = 'main';
+        var idSelected = 0;
 
         var modalConfirm = function(callback){
             $("#modalConfirm").modal({keyboard: false});
@@ -294,6 +296,8 @@
         /** Table Page */
         function loadTablePage(id)
         {
+            idSelected = id;
+            typeSelected = 'tablePage';
             var urlToCall = "{{ path('composer_load_table_page') }}/" + productId + "/" + id;
             $.get(urlToCall, function(data){
                 if(data.status === 'success') {
@@ -303,6 +307,7 @@
                     afterTablePageLoaded();
                     modalSelect.modal('hide');
                     formIsSaved();
+                    loadElementList();
                     return true;
                 } else {
                     sendError(data.message);
@@ -329,7 +334,7 @@
                     '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
                     '//www.tinymce.com/css/codepen.min.css'
                 ],
-                fontsize_formats: '7pt 9pt 11pt 12pt 13pt 14pt 15pt 16pt 17pt 18pt 19pt 20pt 25pt 35pt',
+                fontsize_formats: '9pt 11pt 12pt 13pt 14pt 15pt 16pt 17pt 18pt 19pt 20pt 25pt 35pt',
                 font_formats: 'Arial=arial,helvetica,sans-serif;Dinot Condensed Bold=dinot-condbold,sans-serif;Dinot Bold=dinot-bold,sans-serif;Dinot Medium=dinot-medium,sans-serif;Dinot=dinot,sans-serif;Dinot Condensed=dinot-cond,sans-serif;',
                 setup: function(editor) {
                     editor.on('change', function(e) {
@@ -355,6 +360,8 @@
         /** Radio Page */
         function loadRadioPage(id)
         {
+            idSelected = id;
+            typeSelected = 'radioPage';
             var urlToCall = "{{ path('composer_load_radio_page') }}/" + productId + "/" + id;
             $.get(urlToCall, function(data){
                 if(data.status === 'success') {
@@ -364,6 +371,7 @@
                     afterRadioPageLoaded();
                     modalSelect.modal('hide');
                     formIsSaved();
+                    loadElementList();
                     return true;
                 } else {
                     sendError(data.message);
@@ -448,6 +456,8 @@
         /** Image Page */
         function loadImagePage(id)
         {
+            idSelected = id;
+            typeSelected = 'imagePage';
             var urlToCall = "{{ path('composer_load_image_page') }}/" + productId + "/" + id;
             $.get(urlToCall, function(data){
                 if(data.status === 'success') {
@@ -457,6 +467,7 @@
                     afterImagePageLoaded();
                     modalSelect.modal('hide');
                     formIsSaved();
+                    loadElementList();
                     return true;
                 } else {
                     sendError(data.message);
@@ -478,6 +489,8 @@
         /** Text Page */
         function loadTextPage(id)
         {
+            idSelected = id;
+            typeSelected = 'textPage';
             var urlToCall = "{{ path('composer_load_text_page') }}/" + productId + "/" + id;
             $.get(urlToCall, function(data){
                 if(data.status === 'success') {
@@ -487,6 +500,7 @@
                     afterTextPageLoaded();
                     modalSelect.modal('hide');
                     formIsSaved();
+                    loadElementList();
                     return true;
                 } else {
                     sendError(data.message);
@@ -513,7 +527,7 @@
                     '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
                     '//www.tinymce.com/css/codepen.min.css'
                 ],
-                fontsize_formats: '7pt 9pt 11pt 12pt 13pt 14pt 15pt 16pt 17pt 18pt 19pt 20pt 25pt 35pt',
+                fontsize_formats: '9pt 11pt 12pt 13pt 14pt 15pt 16pt 17pt 18pt 19pt 20pt 25pt 35pt',
                 font_formats: 'Arial=arial,helvetica,sans-serif;Dinot Condensed Bold=dinot-condbold,sans-serif;Dinot Bold=dinot-bold,sans-serif;Dinot Medium=dinot-medium,sans-serif;Dinot=dinot,sans-serif;Dinot Condensed=dinot-cond,sans-serif;',
                 setup: function(editor) {
                     editor.on('change', function(e) {
@@ -539,6 +553,8 @@
         /** Main Page **/
         function loadMainPage()
         {
+            idSelected = 0;
+            typeSelected = 'mainPage';
             /** generating url */
             var urlToCall = "{{ path('composer_load_main_page', {'id': product_id}) }}";
             $.get(urlToCall, function(data) {
@@ -548,6 +564,7 @@
                     el.empty().append($(data.data));
                     afterMainPageLoaded();
                     formIsSaved();
+                    loadElementList();
                     return true;
                 } else {
                     sendError(data.message);
@@ -575,7 +592,7 @@
                     '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
                     '//www.tinymce.com/css/codepen.min.css'
                 ],
-                fontsize_formats: '7pt 9pt 11pt 12pt 13pt 14pt 15pt 16pt 17pt 18pt 19pt 20pt 25pt 35pt',
+                fontsize_formats: '9pt 11pt 12pt 13pt 14pt 15pt 16pt 17pt 18pt 19pt 20pt 25pt 35pt',
                 font_formats: 'Arial=arial,helvetica,sans-serif;Dinot Condensed Bold=dinot-condbold,sans-serif;Dinot Bold=dinot-bold,sans-serif;Dinot Medium=dinot-medium,sans-serif;Dinot=dinot,sans-serif;Dinot Condensed=dinot-cond,sans-serif;',
                 setup: function(editor) {
                     editor.on('change', function(e) {
@@ -1045,19 +1062,26 @@
          */
         function linkListTemplate(pageName, pageType, pageId, pageOrder, documentId)
         {
+            var addText = '';
             if(pageType === 'mainPage') {
+                if(typeSelected === 'mainPage') {
+                    addText = ' <i class="far fa-comment-edit" style="color:#FF0000"></i>';
+                }
                 var template = "<li style=\"padding-top: 5px;" +
                     "    padding-bottom: 5px;" +
                     "    border-bottom: 1px solid #EBEBEB;display:block;\" class=\"ignore-elements\"><div class=\"row\"><div class=\"col-xs-10 text-left\">" +
-                    "<a class=\"goToPageList\" href=\"#\" id=\"linkList-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">[" + ptToName(pageType) + "] " + pageName + "</a>" +
+                    "<a class=\"goToPageList\" href=\"#\" id=\"linkList-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">[" + ptToName(pageType) + "] " + pageName + addText + "</a>" +
                     "</div><div class=\"col-xs-2 text-right\"><a class=\"btn deletePageFromList\" style=\"background-color:#003D50;align-self:right;margin:-1px;\" href=\"#\" id=\"linkListDelete-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">" +
                     "<i class=\"fas fa-trash-alt fa-sm\" style=\"color:#FFFFFF;\"></i></a></div></div>" +
                     "</li>";
             } else {
+                if(typeSelected === pageType && pageId === idSelected) {
+                    addText = ' <i class="far fa-comment-edit" style="color:#FF0000"></i>';
+                }
                 var template = "<li style=\"padding-top: 5px;" +
                     "    padding-bottom: 5px;" +
                     "    border-bottom: 1px solid #EBEBEB;display:block;\" data-pageid=\"" + documentId + "\" data-id=\"" + documentId + "\" class=\"draggable-element\"><div class=\"row\"><div class=\"col-xs-10 text-left\">" +
-                    "<i class=\"fal fa-bars\" style=\"margin-right:3px;cursor:grabbing;\"></i> <a class=\"goToPageList\" href=\"#\" id=\"linkList-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">[" + ptToName(pageType) + "] " + pageName + "</a>" +
+                    "<i class=\"fal fa-bars\" style=\"margin-right:3px;cursor:grabbing;\"></i> <a class=\"goToPageList\" href=\"#\" id=\"linkList-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">[" + ptToName(pageType) + "] " + pageName + addText + "</a>" +
                     "</div><div class=\"col-xs-2 text-right\"><a class=\"btn deletePageFromList\" style=\"background-color:#003D50;align-self:right;margin:-1px;\" href=\"#\" id=\"linkListDelete-" + pageOrder + "\" data-type=\"" + pageType + "\" data-order=\"" + pageOrder + "\" data-pageid=\"" + pageId + "\">" +
                     "<i class=\"fas fa-trash-alt fa-sm\" style=\"color:#FFFFFF;\"></i></a></div></div>" +
                     "</li>";

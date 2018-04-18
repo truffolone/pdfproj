@@ -518,7 +518,7 @@
     {% endif %}
 {% endfor %}
 <div class="lastFooter">
-    <img src="{% if pages|length is odd %}{{ absolute_url(asset('images/triangolo_bianco.png')) }}{% else %}{{ absolute_url(asset('images/triangolo_grigio.png')) }}{% endif %}" class="triangleBottom">
+    <img src="{% if ((pages|length is odd) or (pages[pages|length - 1].type == 'imagePage')) %}{{ absolute_url(asset('images/triangolo_bianco.png')) }}{% else %}{{ absolute_url(asset('images/triangolo_grigio.png')) }}{% endif %}" class="triangleBottom">
     <div class="footerrimo">
         <table border="0" width="100%" style="margin-top:5mm;margin-right:15mm;">
             <tr>
